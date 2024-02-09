@@ -5,7 +5,11 @@ export const content =  [
   "./src/**/*.{js,ts,jsx,tsx}",
 ]
 export const theme = {
-  extend: {},
+  extend: {
+    flex: {
+      '2': '2 2 0%'
+    }
+  },
 };
 export const plugins = [daisyuiplugin];
 export const daisyui = {
