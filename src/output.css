@@ -1964,22 +1964,13 @@ html {
   padding: 1rem;
 }
 
+.text-\[7em\] {
+  font-size: 7em;
+}
+
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
-}
-
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
-
-.text-\[10em\] {
-  font-size: 10em;
-}
-
-.text-\[7em\] {
-  font-size: 7em;
 }
 
 .shadow {

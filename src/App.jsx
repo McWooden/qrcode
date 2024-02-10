@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import QrCodeGenerator from "./components/QrCodeGenerator";
 import Scanner from "./components/Scanner";
 import Home from "./components/Home";
+import Admin from "./components/admin/Admin";
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Route path="/" Component={Home}/>
       <Route path="/pemindai" Component={Scanner}/>
       <Route path="/qrcode" Component={QrCodeGenerator}/>
+      <Route path="/admin" Component={Admin}/>
     </Routes>
   </div>
 }
