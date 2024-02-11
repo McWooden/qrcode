@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getDecryptObjectLocalStorage, setEncryptObjectLocalStorage } from "../utils";
 
 const initialState = {
-    account: null,
+    data: getDecryptObjectLocalStorage('account') || null,
 };
 
 export const counterSlice = createSlice({
@@ -9,12 +10,18 @@ export const counterSlice = createSlice({
     initialState,
     reducers: {
         setAccount: (state, action) => {
-            state.account = action.payload
+            const data = {...action.payload, timestamp: +new Date()}
+            setEncryptObjectLocalStorage('account', data)
+            state.data = data
+        },
+        logout: (state) => {
+            localStorage.removeItem('account')
+            state.data = null
         },
     },
 });
 
 // Action creators are generated for each case reducer function
-export const { setAccount } = counterSlice.actions;
+export const { setAccount, logout } = counterSlice.actions;
 
 export default counterSlice.reducer;

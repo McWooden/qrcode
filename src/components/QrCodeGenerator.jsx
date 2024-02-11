@@ -1,27 +1,35 @@
-import { useState } from "react";
 import QRCode from "react-qr-code";
+import { useSelector } from "react-redux";
+import { censorName, encryptString } from "../utils";
+import { TbQrcodeOff } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 export default function QrCodeGenerator() {
-    const [qrValue, setQrValue] = useState('')
+    const account = useSelector(state => state.account.data)
+    const navigate = useNavigate()
 
-    return <div className="flex flex-col gap-2 p-2">
-    <div className="card bg-base-100 shadow-xl overflow-hidden">
-        <div className="p-2 flex justify-center">
-            <div className="p-2 bg-neutral-100 rounded shadow">
-                <QRCode value={qrValue}/>
+    if (!account) return <div className="flex flex-col gap-2 p-2">
+        <div className="card bg-base-100 shadow-xl overflow-hidden">
+            <div className="p-2 flex justify-center">
+                <TbQrcodeOff className="text-9xl"/>
             </div>
-        </div>
-        <div className="card-body">
-            <label className="form-control w-full max-w-xs">
-                <div className="label">
-                    <span className="label-text">Siapa namamu?</span>
-                </div>
-                <input type="text" placeholder="Ketik disini" className="input input-bordered w-full max-w-xs" value={qrValue} onChange={(e) => setQrValue(e.target.value)}/>
-            </label>
-            <div className="card-actions justify-end">
-                <button className="btn btn-primary" onClick={() => setQrValue('')}>Setel ulang</button>
+            <div className="card-body text-center text-xl flex flex-col gap-2">
+                <span>Harap masuk ke akun sebelum menampilkan QrCode</span>
+                <div className="btn" onClick={() => navigate('/akun')}>Masuk ke akun</div>
             </div>
         </div>
     </div>
-</div>
+
+    return <div className="flex flex-col gap-2 p-2">
+        <div className="card bg-base-100 shadow-xl overflow-hidden">
+            <div className="p-2 flex justify-center">
+                <div className="p-2 bg-neutral-100 rounded shadow">
+                    <QRCode value={encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen}`)}/>
+                </div>
+            </div>
+            <div className="card-body text-center text-xl flex flex-col gap-2">
+                <span>{censorName(account?.nama)}</span>
+            </div>
+        </div>
+    </div>
 }

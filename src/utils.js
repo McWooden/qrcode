@@ -1,15 +1,21 @@
 import CryptoJS from "crypto-js"
 
+export const REST_API = import.meta.env.VITE_REST_API
+
+export function encryptString(string) {
+    const encryptedMessage = CryptoJS.AES.encrypt(string, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString()
+    return encryptedMessage
+}
 
 function encryptObject(object) {
     const jsonString = JSON.stringify(object)
 
-    const encryptedMessage = CryptoJS.AES.encrypt(jsonString, import.meta.env.REACT_APP_CRYPTO_KEY).toString()
+    const encryptedMessage = CryptoJS.AES.encrypt(jsonString, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString()
     return encryptedMessage
 }
 
 function dencryptObject(encryptedMessage) {
-    const decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, import.meta.env.REACT_APP_CRYPTO_KEY)
+    const decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, import.meta.env.VITE_CRYPTO_SECRET_KEY)
     const decryptedJsonString = decryptedBytes.toString(CryptoJS.enc.Utf8)
 
     const decryptedObject = JSON.parse(decryptedJsonString)
@@ -64,4 +70,26 @@ export function getDecryptObjectLocalStorage(key) {
     } catch (error) {
         localStorage.removeItem(key)
     }
+}
+
+export function censorName(name) {
+    if (!name) return '-'
+
+    // Split the name into words
+    let words = name.split(' ')
+
+    // Censor the first word
+    if (words.length > 0) {
+        let firstWord = words[0].substring(0, 3) + '*'.repeat(words[0].length - 3)
+        words[0] = firstWord
+    }
+
+    // Iterate through each word starting from the second word
+    for (let i = 1; i < words.length; i++) {
+        // Censor all characters except the first letter
+        words[i] = words[i].charAt(0) + '*'.repeat(words[i].length - 1)
+    }
+
+    // Join the censored words and return
+    return words.join(' ')
 }

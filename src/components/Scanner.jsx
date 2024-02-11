@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {QrScanner} from "react-qrcode-scanner";
-
 import { FaVideoSlash } from "react-icons/fa6";
+import axios from "axios";
+import { REST_API } from "../utils";
 
 export default function Scanner() {
     const [qrValue, setQrValue] = useState('')
@@ -15,7 +16,33 @@ export default function Scanner() {
         console.log({error})
     }
 
-    return <div className="flex flex-col gap-2 p-2 h-[50%]">
+    const [succeedList, setSucceedList] = useState(['123','321'])
+    const [errorList, setErrorList] = useState(['987'])
+
+    async function sendMessage(data) {
+        await axios
+            .post(REST_API + '/sendMessage', {data: data}, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "true", // Header ngrok-skip-browser-warning
+                },
+            })
+            .then((response) => {
+                setSucceedList(prev => [...prev, data])
+                console.log(response.data)
+            })
+            .catch((error) => {
+                setErrorList(prev => [...prev, data])
+                console.error("Error:", error)
+            });
+    }
+
+    useEffect(() => {
+        if (!qrValue) return
+        sendMessage(qrValue)
+    }, [qrValue])
+
+    return <div className="flex flex-col gap-2 p-2 flex-1">
         <div className="flex flex-col bg-base-100 shadow-xl rounded-md sm:flex-row">
             <div className="flex flex-col gap-2 h-[50%] flex-2 p-2 bg-base-200">
                     {openCam ?
@@ -40,10 +67,27 @@ export default function Scanner() {
                 <label className="form-control w-full">
                     <input type="text" placeholder="Nilai yang terbaca" className="input input-bordered w-full" value={qrValue} readOnly/>
                 </label>
-                <div className="flex justify-end">
-                    <button className="btn btn-primary" onClick={() => setQrValue('')}>Setel ulang</button>
-                </div>
             </div>
         </div>
+        <div className="flex gap-2 p-2">
+            <HistoryContainer items={errorList} tittle='Gagal'/>
+            <HistoryContainer items={succeedList} tittle='Berhasil'/>
+        </div>
+    </div>
+}
+
+// function History({list}) {
+//     return <div className="flex flex-col gap-2">
+//         {list.map(e => <div key={e}></div>)}
+//     </div>
+// }
+
+export const HistoryContainer = (prop) => {
+    useEffect(() => {
+        console.log(prop);
+    },[prop])
+    return <div className="flex flex-col gap-2 flex-1 bg-base-100 p-2 rounded">
+        <h3 className="text-semibold text-md">{prop.tittle}</h3>
+        {prop.items.map(e => <div key={e}>{e}</div>)}
     </div>
 }
