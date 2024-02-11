@@ -7,7 +7,7 @@ import Admin from "./components/admin/Admin";
 
 
 function App() {
-  return <div className="App flex flex-col gap-2 h-full">
+  return <div className="App flex flex-col gap-2  min-h-screen">
     <Navbar/>
     <Routes>
       <Route path="/" Component={Home}/>

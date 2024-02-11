@@ -16,21 +16,23 @@ export default function Scanner() {
     }
 
     return <div className="flex flex-col gap-2 p-2 h-[50%]">
-        <div className="flex flex-col bg-base-100 shadow-xl overflow-hidden rounded-md sm:flex-row">
+        <div className="flex flex-col bg-base-100 shadow-xl rounded-md sm:flex-row">
             <div className="flex flex-col gap-2 h-[50%] flex-2 p-2 bg-base-200">
                     {openCam ?
                         <QrScanner onScan={handleScan} onError={handleError}/>
                     :
-                        <div className="flex justify-center items-center gap-2 min-h-40 flex-col p-4">
-                            <FaVideoSlash className="text-[7em]"/>
+                        <div className="flex justify-center items-center gap-2 min-h-40 flex-col p-4 bg-neutral text-neutral-content rounded py-16">
+                            <FaVideoSlash className="text-[7em] text-error"/>
                             <span>Kamera belum dinyalakan</span>
                         </div>
                     }
                 <div className="flex gap-2 justify-between items-center">
-                    <input type="checkbox" className="toggle toggle-lg" checked={openCam} onChange={(e) => {
-                        if (!e.target.checked) return window.location.reload()
-                        setOpenCam(e.target.checked)
-                    }} />
+                    <div className="tooltip tooltip-right" data-tip={openCam ? 'Klik untuk menyalakan' : 'klik untuk mematikan'}>
+                        <input type="checkbox" className="toggle toggle-lg" checked={openCam} onChange={(e) => {
+                            if (!e.target.checked) return window.location.reload()
+                            setOpenCam(e.target.checked)
+                        }} />
+                    </div>
                 </div>
             </div>
             <div className="flex flex-col flex-1 p-4 gap-2">
