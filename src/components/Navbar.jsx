@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
+import { VscAccount } from "react-icons/vsc";
 
 export default function Navbar() {
     const navigate = useNavigate()
@@ -34,7 +34,24 @@ export default function Navbar() {
                 <a className="btn btn-ghost text-xl">SMANAGA</a>
             </div>
             <div className="navbar-end">
-                
+                <div className="dropdown dropdown-end">
+                <div tabIndex={0} role="button" className="btn btn-circle btn-ghost">
+                    <div className="rounded-full">
+                        <VscAccount className="text-3xl"/>
+                    </div>
+                </div>
+                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li onClick={() => navigate('/akun')}>
+                        <a className="justify-between">
+                            Profil
+                        </a>
+                    </li>
+                    <li><a>Keluar</a></li>
+                </ul>
+                </div>
+                {/* <div className="px-2 cursor-pointer" onClick={() => navigate('/akun')}>
+                    <VscAccount className="text-3xl"/>
+                </div> */}
             </div>
         </div>
     );

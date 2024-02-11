@@ -4,6 +4,7 @@ import QrCodeGenerator from "./components/QrCodeGenerator";
 import Scanner from "./components/Scanner";
 import Home from "./components/Home";
 import Admin from "./components/admin/Admin";
+import Account from "./components/account/Account";
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Route path="/pemindai" Component={Scanner}/>
       <Route path="/qrcode" Component={QrCodeGenerator}/>
       <Route path="/admin" Component={Admin}/>
+      <Route path="/akun" Component={Account}/>
     </Routes>
   </div>
 }
