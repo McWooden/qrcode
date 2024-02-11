@@ -16,8 +16,8 @@ export default function Scanner() {
         console.log({error})
     }
 
-    const [succeedList, setSucceedList] = useState(['123','321'])
-    const [errorList, setErrorList] = useState(['987'])
+    const [succeedList, setSucceedList] = useState(['123', '321'])
+    const [errorList, setErrorList] = useState(['987', '456'])
 
     async function sendMessage(data) {
         await axios
