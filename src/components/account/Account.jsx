@@ -34,7 +34,7 @@ function FormAccount() {
         dispatch(setAccount({nama, nomor, kelas, nomorAbsen}))
     }
 
-    const classOption = [{grade: 'X.E', length: 9}, {grade: 'XI.F', length: 8}, {grade: 'XII MIPA', length: 5}, {grade: 'XII IPS', length: 3}]
+    const classOption = [{grade: 'X-E', length: 9}, {grade: 'XI-F', length: 8}, {grade: 'XII-MIPA', length: 5}, {grade: 'XII-IPS', length: 3}]
 
     return <form className="flex flex-col gap-2 max-w-xl w-full h-full" onSubmit={handleSubmit}>
         <label className="form-control w-full">
@@ -45,7 +45,7 @@ function FormAccount() {
         </label>
         <label className="form-control w-full">
             <div className="label">
-                <span className="label-text">Nomor handphone</span>
+                <span className="label-text">Nomor handphone Ortu/wali</span>
             </div>
             <input type="number" placeholder="6285000000000" className="input input-bordered w-full" onChange={(e) => setNomor(e.target.value)} value={nomor} required/>
         </label>
@@ -59,7 +59,7 @@ function FormAccount() {
                     {
                         classOption.map((option, index) => {
                         const { grade, length } = option
-                        const optionsArray = Array.from({ length }, (_, i) => `${grade}/${i + 1}`)
+                        const optionsArray = Array.from({ length }, (_, i) => `${grade}${i + 1}`)
                         return optionsArray.map((classValue, i) => (
                             <option key={index * 100 + i} value={classValue}>
                                 {classValue}

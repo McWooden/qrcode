@@ -29,6 +29,7 @@ export default function QrCodeGenerator() {
             </div>
             <div className="card-body text-center text-xl flex flex-col gap-2">
                 <span>{censorName(account?.nama)}</span>
+                <p className="break-all">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen}`)}</p>
             </div>
         </div>
     </div>
