@@ -35,7 +35,7 @@ function FormAccount() {
     function handleSubmit(e) {
         e.preventDefault()
 
-        dispatch(setAccount({nama, nomor, kelas, nomorAbsen}))
+        dispatch(setAccount({nama, nomor: '62' + nomor, kelas, nomorAbsen}))
     }
 
     const classOption = [{grade: 'X-E', length: 9}, {grade: 'XI-F', length: 8}, {grade: 'XII-MIPA', length: 5}, {grade: 'XII-IPS', length: 3}]
@@ -51,7 +51,10 @@ function FormAccount() {
             <div className="label">
                 <span className="label-text">Nomor handphone Ortu/wali</span>
             </div>
-            <input type="number" placeholder="6285000000000" className="input input-bordered w-full" onChange={(e) => setNomor(e.target.value)} value={nomor} required/>
+            <div className="flex items-center gap-2">
+                <span className="bg-base-200 h-full grid place-items-center rounded p-2">+62</span>
+                <input type="number" placeholder="81234567890" className="input input-bordered w-full" onChange={(e) => setNomor(e.target.value)} value={nomor} required/>
+            </div>
         </label>
         <div className="flex flex-col sm:flex-row gap-2">
             <label className="form-control w-full max-w-xs">

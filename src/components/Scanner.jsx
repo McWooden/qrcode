@@ -88,6 +88,6 @@ export const HistoryContainer = (prop) => {
     },[prop])
     return <div className="flex flex-col gap-2 flex-1 bg-base-100 p-2 rounded">
         <h3 className="text-semibold text-md">{prop.tittle}</h3>
-        {prop.items.map(e => <div key={e} className="break-all shadow p-2">{e}</div>)}
+        {prop.items.map(e => <div key={e} className="break-all shadow p-2">{e.data}</div>)}
     </div>
 }
