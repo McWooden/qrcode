@@ -17,7 +17,7 @@ function CardAccount() {
 
     return <div className="flex flex-col gap-2 text-center">
         <p>{account?.nama}</p>
-        <p>{account?.nomor}</p>
+        <p>+62 {account?.nomor}</p>
         <p>{account?.kelas}</p>
         <p>{account?.nomorAbsen}</p>
         <div className="btn" onClick={() => navigate('/qrcode')}>Tunjukkan QrCode</div>
