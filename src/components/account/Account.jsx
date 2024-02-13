@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setAccount } from "../../redux/account"
+import { useNavigate } from "react-router-dom"
 
 export default function Account() {
     const account = useSelector(state => state.account.data)
@@ -12,11 +13,14 @@ export default function Account() {
 
 function CardAccount() {
     const account = useSelector(state => state.account.data)
+    const navigate = useNavigate()
+
     return <div className="flex flex-col gap-2 text-center">
         <p>{account?.nama}</p>
         <p>{account?.nomor}</p>
         <p>{account?.kelas}</p>
         <p>{account?.nomorAbsen}</p>
+        <div className="btn" onClick={() => navigate('/qrcode')}>Tunjukkan QrCode</div>
     </div>
 }
 

@@ -16,8 +16,8 @@ export default function Scanner() {
         console.log({error})
     }
 
-    const [succeedList, setSucceedList] = useState(['123', '321'])
-    const [errorList, setErrorList] = useState(['987', '456'])
+    const [succeedList, setSucceedList] = useState([{data: 'U2FsdGVkX19lEA+YqchFUQ8aOMUlJwvZ6yP5Q1dHCYRobx+6s/fC7XzWVe9NrRxkrS5vxFcQqm/s8Vqz/y4HfQ==', response: {code: 201, msg: 'Sukses!'}}])
+    const [errorList, setErrorList] = useState([{data: 'U2FsdGVkX1+ZPVQHAEQhgeWMi6Dck2ceLgmy0ReQrKKvtU7kKr8FYQjFl36LTWQzq3ubs0fQqjMU7LnSr8GLsQ==', response: {code: 404, msg: 'Nomor tidak ditemukan'}}])
 
     async function sendMessage(data) {
         await axios
@@ -69,7 +69,7 @@ export default function Scanner() {
                 </label>
             </div>
         </div>
-        <div className="flex gap-2 p-2">
+        <div className="flex gap-2 p-2 w-full">
             <HistoryContainer items={errorList} tittle='Gagal'/>
             <HistoryContainer items={succeedList} tittle='Berhasil'/>
         </div>
@@ -88,6 +88,6 @@ export const HistoryContainer = (prop) => {
     },[prop])
     return <div className="flex flex-col gap-2 flex-1 bg-base-100 p-2 rounded">
         <h3 className="text-semibold text-md">{prop.tittle}</h3>
-        {prop.items.map(e => <div key={e}>{e}</div>)}
+        {prop.items.map(e => <div key={e} className="break-all shadow p-2">{e}</div>)}
     </div>
 }
