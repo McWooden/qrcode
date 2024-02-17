@@ -5,13 +5,12 @@ import { TbQrcodeOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function QrCodeGenerator() {
+export default async function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
     const navigate = useNavigate()
     let ip = ""
-    let canAbsen = false
-    axios.get("https://api.ipify.org/?format=json").then(res => ip = res.ip).catch(e => console.log(e))
-    axios.post()
+    await axios.get("https://api.ipify.org/?format=json").then(res => ip = res.ip).catch(e => console.log(e))
+    let canAbsen = await checkValid(ip)
     
     if (!canAbsen) return <div className="flex flex-col gap-2 p-2">
         <div className="card bg-base-100 shadow-xl overflow-hidden">
