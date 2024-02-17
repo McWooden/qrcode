@@ -7,6 +7,19 @@ import { useNavigate } from "react-router-dom";
 export default function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
     const navigate = useNavigate()
+    let ip = ""
+
+    if (!canAbsen) return <div className="flex flex-col gap-2 p-2">
+        <div className="card bg-base-100 shadow-xl overflow-hidden">
+            <div className="p-2 flex justify-center">
+                <TbQrcodeOff className="text-9xl"/>
+            </div>
+            <div className="card-body text-center text-xl flex flex-col gap-2">
+                <span>Anda telah melakukan absensi!</span>
+                <div className="btn" onClick={() => navigate('/akun')}>Masuk ke akun</div>
+            </div>
+        </div>
+    </div>
 
     if (!account) return <div className="flex flex-col gap-2 p-2">
         <div className="card bg-base-100 shadow-xl overflow-hidden">
