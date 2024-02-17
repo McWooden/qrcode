@@ -18,24 +18,6 @@ export default function Scanner() {
 
     const [succeedList, setSucceedList] = useState([{data: 'U2FsdGVkX19lEA+YqchFUQ8aOMUlJwvZ6yP5Q1dHCYRobx+6s/fC7XzWVe9NrRxkrS5vxFcQqm/s8Vqz/y4HfQ==', response: {code: 201, msg: 'Sukses!'}}])
     const [errorList, setErrorList] = useState([{data: 'U2FsdGVkX1+ZPVQHAEQhgeWMi6Dck2ceLgmy0ReQrKKvtU7kKr8FYQjFl36LTWQzq3ubs0fQqjMU7LnSr8GLsQ==', response: {code: 404, msg: 'Nomor tidak ditemukan'}}])
-
-    async function checkValid(ip) {
-        await axios
-            .post(REST_API + '/checkValid', {data: ip}, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "ngrok-skip-browser-warning": "true", // Header ngrok-skip-browser-warning
-                },
-            })
-            .then((response) => {
-                console.log(response.data)
-                return response.canAbsen
-            })
-            .catch((error) => {
-                setErrorList(prev => [...prev, data])
-                console.error("Error:", error)
-            });
-    }
     
     async function sendMessage(data) {
         await axios
