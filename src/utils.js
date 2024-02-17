@@ -7,6 +7,24 @@ export function encryptString(string) {
     return encryptedMessage
 }
 
+export async function checkValid(ip) {
+    await axios
+        .post(REST_API + '/checkValid', {data: ip}, {
+            headers: {
+                "Content-Type": "application/json",
+                "ngrok-skip-browser-warning": "true", // Header ngrok-skip-browser-warning
+            },
+        })
+        .then((response) => {
+            console.log(response.data)
+            return response.canAbsen
+        })
+        .catch((error) => {
+            setErrorList(prev => [...prev, data])
+            console.error("Error:", error)
+        });
+}
+
 function encryptObject(object) {
     const jsonString = JSON.stringify(object)
 
