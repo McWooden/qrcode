@@ -3,11 +3,13 @@ import { useSelector } from "react-redux";
 import { censorName, encryptString } from "../utils";
 import { TbQrcodeOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
     const navigate = useNavigate()
     let ip = ""
+    axios.get("https://api.ipify.org/?format=json").then(res => ip = res.ip).catch(e => console.log(e))
 
     if (!canAbsen) return <div className="flex flex-col gap-2 p-2">
         <div className="card bg-base-100 shadow-xl overflow-hidden">
