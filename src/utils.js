@@ -1,6 +1,7 @@
 import CryptoJS from "crypto-js"
 
-export const REST_API = import.meta.env.VITE_REST_API
+//export const REST_API = import.meta.env.VITE_REST_API
+export const REST_API = "https://7072-115-178-239-196.ngrok-free.app/"
 
 export function encryptString(string) {
     const encryptedMessage = CryptoJS.AES.encrypt(string, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString()
