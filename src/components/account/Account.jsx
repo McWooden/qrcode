@@ -32,6 +32,15 @@ function FormAccount() {
 
     const dispatch = useDispatch()
 
+    const handleNameChange = (event) => {
+        const inputValue = event.target.value;
+        const regex = /^[a-zA-Z]*$/;
+        
+        if (regex.test(inputValue)) {
+            setNama(inputValue);
+        }
+    }
+
     function handleSubmit(e) {
         e.preventDefault()
 
@@ -45,7 +54,7 @@ function FormAccount() {
             <div className="label">
                 <span className="label-text">Siapa namamu?</span>
             </div>
-            <input type="text" placeholder="Ketik nama" className="input input-bordered w-full" onChange={(e) => setNama(e.target.value)} value={nama} required/>
+            <input type="text" placeholder="Ketik nama" className="input input-bordered w-full" onChange={handleNameChange} value={nama} required/>
         </label>
         <label className="form-control w-full">
             <div className="label">

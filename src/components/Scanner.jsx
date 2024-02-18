@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import {QrScanner} from "react-qrcode-scanner";
 import { FaVideoSlash } from "react-icons/fa6";
 import axios from "axios";
-import { REST_API, decryptString } from "../utils";
+import { REST_API, decryptString, encryptString } from "../utils";
 import PropTypes from 'prop-types'; 
 
 export default function Scanner() {
@@ -22,7 +22,7 @@ export default function Scanner() {
     const [errorList, setErrorList] = useState([{data: 'U2FsdGVkX1+ZPVQHAEQhgeWMi6Dck2ceLgmy0ReQrKKvtU7kKr8FYQjFl36LTWQzq3ubs0fQqjMU7LnSr8GLsQ==', response: {code: 404, msg: 'Nomor tidak ditemukan'}}])
     
     const sendMessage = useCallback(async data => {
-        const dataToSend = decryptString(data) + `,${ip}`
+        const dataToSend = encryptString(decryptString(data) + `,${ip}`)
         console.log('data', decryptString(data));
         console.log('data to send', dataToSend);
         await axios
