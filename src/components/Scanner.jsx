@@ -18,7 +18,7 @@ export default function Scanner() {
         console.log({error})
     }
 
-    const [succeedList, setSucceedList] = useState([{qr: 'U2FsdGVkX194tIbiZMtGhEUHvhciH0lJb1/UBS6IGTwbvLoGxZ/92oaErykON5TKWLCseYzZsPa9LWqjUCd8rP2VWmabjeEEJDC45Kth+aIm0nxwBDMiDpIU7EtXLWQRVVtyXJDYttHM4DbtKj81zQ==', res: {code: 201}}])
+    const [succeedList, setSucceedList] = useState([])
     const [errorList, setErrorList] = useState([])
     
     const sendMessage = useCallback(async data => {
