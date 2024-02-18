@@ -1,10 +1,12 @@
 import axios from "axios";
 import CryptoJS from "crypto-js"
+// import { store } from "./redux/store";
 
 //export const REST_API = import.meta.env.VITE_REST_API
 export const REST_API = "https://2343-125-160-110-206.ngrok-free.app"
 
 export async function checkValid(ip) {
+    // const be = store.getState().server.be
     try {
         const data = await axios
             .get(REST_API + '/checkValid/' + ip, {

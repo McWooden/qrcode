@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { counterSlice } from "./account";
 
 export const server = createSlice({
     name: 'server',
@@ -14,4 +13,4 @@ export const server = createSlice({
 })
 
 export const { setBe } = server.actions
-export default counterSlice.reducer
+export default server.reducer
