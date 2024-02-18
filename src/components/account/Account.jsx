@@ -34,7 +34,7 @@ function FormAccount() {
 
     const handleNameChange = (event) => {
         const inputValue = event.target.value;
-        const regex = /^[a-zA-Z]*$/;
+        const regex = /^[a-zA-Z\s]*$/
         
         if (regex.test(inputValue)) {
             setNama(inputValue);

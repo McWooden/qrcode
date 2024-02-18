@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import {QrScanner} from "react-qrcode-scanner";
 import { FaVideoSlash } from "react-icons/fa6";
 import axios from "axios";
-import { REST_API, decryptString, encryptString } from "../utils";
+import { REST_API, censorName, decryptString, encryptString } from "../utils";
 import PropTypes from 'prop-types'; 
 
 export default function Scanner() {
@@ -18,8 +18,8 @@ export default function Scanner() {
         console.log({error})
     }
 
-    const [succeedList, setSucceedList] = useState([{data: 'U2FsdGVkX19lEA+YqchFUQ8aOMUlJwvZ6yP5Q1dHCYRobx+6s/fC7XzWVe9NrRxkrS5vxFcQqm/s8Vqz/y4HfQ==', response: {code: 201, msg: 'Sukses!'}}])
-    const [errorList, setErrorList] = useState([{data: 'U2FsdGVkX1+ZPVQHAEQhgeWMi6Dck2ceLgmy0ReQrKKvtU7kKr8FYQjFl36LTWQzq3ubs0fQqjMU7LnSr8GLsQ==', response: {code: 404, msg: 'Nomor tidak ditemukan'}}])
+    const [succeedList, setSucceedList] = useState([{qr: 'U2FsdGVkX194tIbiZMtGhEUHvhciH0lJb1/UBS6IGTwbvLoGxZ/92oaErykON5TKWLCseYzZsPa9LWqjUCd8rP2VWmabjeEEJDC45Kth+aIm0nxwBDMiDpIU7EtXLWQRVVtyXJDYttHM4DbtKj81zQ==', res: {code: 201}}])
+    const [errorList, setErrorList] = useState([])
     
     const sendMessage = useCallback(async data => {
         const dataToSend = encryptString(decryptString(data) + `,${ip}`)
@@ -34,13 +34,14 @@ export default function Scanner() {
             })
             .then((response) => {
                 console.log('res', response.data)
-                setSucceedList(prev => [...prev, data])
+                setSucceedList(prev => [...prev, {qr: qrValue, res: response}])
+                setQrValue('')
             })
             .catch((error) => {
                 setErrorList(prev => [...prev, data])
                 console.error("Error:", error)
             });
-    },[ip])
+    },[ip, qrValue])
 
     useEffect(() => {
         if (!qrValue) return
@@ -106,17 +107,17 @@ export default function Scanner() {
 export const HistoryContainer = (prop) => {
     return <div className="flex flex-col gap-2 flex-1 bg-base-100 p-2 rounded">
         <h3 className="text-semibold text-md">{prop.tittle}</h3>
-        {prop.items.map(e => <div key={e} className="break-all shadow p-2">{e.data}</div>)}
+        {prop.items.map((e, i) => <History key={i} data={e}/>)}
     </div>
 }
 
-function History({list}) {
+function History({data}) {
     return <div className="flex flex-col gap-2">
-        {list.map(e => <div key={e}></div>)}
+        <p className="break-all shadow p-2">{censorName(decryptString(data.qr).split(',')[0])}</p>
     </div>
 }
 
 History.propTypes = {
-    list: PropTypes.array.isRequired
+    data: PropTypes.object.isRequired
 }
 

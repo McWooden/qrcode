@@ -7,7 +7,7 @@ export const REST_API = "https://f2eb-125-160-110-206.ngrok-free.app"
 export async function checkValid(ip) {
     try {
         const data = await axios
-            .post(REST_API + '/checkValid', {data: ip}, {
+            .get(REST_API + '/checkValid/' + ip, {
                 headers: {
                     "Content-Type": "application/json",
                     "ngrok-skip-browser-warning": "true", // Header ngrok-skip-browser-warning
