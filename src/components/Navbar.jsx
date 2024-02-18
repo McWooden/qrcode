@@ -49,6 +49,11 @@ export default function Navbar() {
                                 Profil
                             </a>
                         </li>
+                        <li onClick={() => navigate('/setting')}>
+                            <a className="justify-between">
+                                Setting
+                            </a>
+                        </li>
                         <li onClick={() => dispatch(logout())}><a>Keluar</a></li>
                     </ul>
                 </div>
