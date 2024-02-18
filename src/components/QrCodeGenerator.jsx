@@ -10,26 +10,51 @@ export default function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
     const navigate = useNavigate()
     const [ip, setIp] = useState('')
-    const [canAbsence, setCanAbsence] = useState(true)
+    const [canAbsence, setCanAbsence] = useState(false)
+    const [isGettingPermission, setIsGettingPermission] = useState(false)
 
     const getIp = useCallback(async() => {
-        await axios.get("https://api.ipify.org/?format=json")
+        setIsGettingPermission(true)
+        try {
+            await axios.get("https://api.ipify.org/?format=json")
             .then(res => {
-                setIp(res.ip)
-            }).catch(e => {
-                console.log(e)
-            })
+                    setIp(res.data.ip)
+                }).catch(e => {
+                    console.log(e)
+                })
+        } catch (error) {
+            console.log(error);
+        }
     },[])
     
+    const getPermissionAbsence = useCallback(async() => {
+        try {
+            const permission = await checkValid(ip)
+            console.log('permission got', permission);
+            setIsGettingPermission(false)
+            setCanAbsence(permission.canAbsen)
+        } catch (error) {
+            setIsGettingPermission(false)
+            console.log(error)
+        }
+    },[ip])
+
     useEffect(() => {
         if (!ip) {
             getIp()
         } else {
-            setCanAbsence(checkValid(ip))
+            getPermissionAbsence()
         }
-    },[ip, getIp])
+    },[ip, getIp, getPermissionAbsence])
 
-    if (!ip) return <div className="flex items-center justify-center">Loading validation</div>
+    if (isGettingPermission) return <div className="flex flex-col gap-2 items-center justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
+        <p>Getting permission</p>
+    </div>
+    if (!ip) return <div className="flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
+        <p>Loading validation</p>
+    </div>
     
     if (!canAbsence) return <div className="flex flex-col gap-2 p-2">
         <div className="card bg-base-100 shadow-xl overflow-hidden">
@@ -37,7 +62,7 @@ export default function QrCodeGenerator() {
                 <TbQrcodeOff className="text-9xl"/>
             </div>
             <div className="card-body text-center text-xl flex flex-col gap-2">
-                <span>Anda telah melakukan absensi!</span>
+                <span>Anda tidak dapat izin absen</span>
                 <div className="btn" onClick={() => navigate('/akun')}>Masuk ke akun</div>
             </div>
         </div>

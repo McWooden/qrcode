@@ -2,26 +2,28 @@ import axios from "axios";
 import CryptoJS from "crypto-js"
 
 //export const REST_API = import.meta.env.VITE_REST_API
-export const REST_API = "https://8a12-125-160-110-206.ngrok-free.app"
+export const REST_API = "https://4d58-125-160-110-206.ngrok-free.app"
 
 export async function checkValid(ip) {
     try {
-        await axios
+        const data = await axios
             .post(REST_API + '/checkValid', {data: ip}, {
                 headers: {
                     "Content-Type": "application/json",
                     "ngrok-skip-browser-warning": "true", // Header ngrok-skip-browser-warning
                 },
             })
-            .then((response) => {
-                console.log(response.data)
-                return response.canAbsen
+            .then(res => {
+                console.log(REST_API + '/checkValid', ip, res)
+                return res.data
+                // return res.data.canAbsen
             })
-            .catch((error) => {
+            .catch(() => {
                 // setErrorList(prev => [...prev, error])
-                console.error("Error:", error)
                 return false
             });
+            // console.log('data:', data);
+        return data
     } catch (error) {
         console.log(error);
         return false
@@ -56,16 +58,20 @@ export function encryptString(string) {
     const encryptedMessage = CryptoJS.AES.encrypt(string, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString()
     return encryptedMessage
 }
+export function decryptString(encryptedMessage) {
+    const decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, import.meta.env.VITE_CRYPTO_SECRET_KEY)
+    const decryptedJsonString = decryptedBytes.toString(CryptoJS.enc.Utf8)
+    return decryptedJsonString
+}
 
-
-function encryptObject(object) {
+export function encryptObject(object) {
     const jsonString = JSON.stringify(object)
 
     const encryptedMessage = CryptoJS.AES.encrypt(jsonString, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString()
     return encryptedMessage
 }
 
-function dencryptObject(encryptedMessage) {
+export function decryptObject(encryptedMessage) {
     const decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, import.meta.env.VITE_CRYPTO_SECRET_KEY)
     const decryptedJsonString = decryptedBytes.toString(CryptoJS.enc.Utf8)
 
@@ -113,7 +119,7 @@ export function getDecryptObjectLocalStorage(key) {
         const dataString = localStorage.getItem(key)
         
         if (dataString) {
-            const data = dencryptObject(dataString)
+            const data = decryptObject(dataString)
             return data
         } else {
             return null
