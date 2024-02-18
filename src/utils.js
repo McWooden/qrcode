@@ -2,7 +2,7 @@ import axios from "axios";
 import CryptoJS from "crypto-js"
 
 //export const REST_API = import.meta.env.VITE_REST_API
-export const REST_API = "https://a000-115-178-236-185.ngrok-free.app/"
+export const REST_API = "https://2343-125-160-110-206.ngrok-free.app"
 
 export async function checkValid(ip) {
     try {
