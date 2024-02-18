@@ -84,12 +84,12 @@ export default function QrCodeGenerator() {
         <div className="card bg-base-100 shadow-xl overflow-hidden">
             <div className="p-2 flex justify-center">
                 <div className="p-2 bg-neutral-100 rounded shadow">
-                    <QRCode value={encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen}`)}/>
+                    <QRCode value={encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}/>
                 </div>
             </div>
             <div className="card-body text-center text-xl flex flex-col gap-2">
                 <span>{censorName(account?.nama)}</span>
-                <p className="break-all">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen}`)}</p>
+                <p className="break-all">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}</p>
             </div>
         </div>
     </div>

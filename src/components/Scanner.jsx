@@ -23,7 +23,8 @@ export default function Scanner() {
     
     const sendMessage = useCallback(async data => {
         const dataToSend = decryptString(data) + `,${ip}`
-        console.log(dataToSend);
+        console.log('data', decryptString(data));
+        console.log('data to send', dataToSend);
         await axios
             .post(REST_API + '/sendMessage', {data: dataToSend}, {
                 headers: {
@@ -32,8 +33,8 @@ export default function Scanner() {
                 },
             })
             .then((response) => {
+                console.log('res', response.data)
                 setSucceedList(prev => [...prev, data])
-                console.log(response.data)
             })
             .catch((error) => {
                 setErrorList(prev => [...prev, data])
