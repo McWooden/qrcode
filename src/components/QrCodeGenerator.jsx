@@ -1,18 +1,37 @@
-import QRCode from "react-qr-code";
 import { useSelector } from "react-redux";
-import { censorName, encryptString } from "../utils";
+import { censorName, checkValid, encryptString } from "../utils";
 import { TbQrcodeOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+import QRCode from "react-qr-code";
 
-export default async function QrCodeGenerator() {
+export default function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
     const navigate = useNavigate()
-    let ip = ""
-    await axios.get("https://api.ipify.org/?format=json").then(res => ip = res.ip).catch(e => console.log(e))
-    let canAbsen = await checkValid(ip)
+    const [ip, setIp] = useState('')
+    const [canAbsence, setCanAbsence] = useState(true)
+
+    const getIp = useCallback(async() => {
+        await axios.get("https://api.ipify.org/?format=json")
+            .then(res => {
+                setIp(res.ip)
+            }).catch(e => {
+                console.log(e)
+            })
+    },[])
     
-    if (!canAbsen) return <div className="flex flex-col gap-2 p-2">
+    useEffect(() => {
+        if (!ip) {
+            getIp()
+        } else {
+            setCanAbsence(checkValid(ip))
+        }
+    },[ip, getIp])
+
+    if (!ip) return <div className="flex items-center justify-center">Loading validation</div>
+    
+    if (!canAbsence) return <div className="flex flex-col gap-2 p-2">
         <div className="card bg-base-100 shadow-xl overflow-hidden">
             <div className="p-2 flex justify-center">
                 <TbQrcodeOff className="text-9xl"/>

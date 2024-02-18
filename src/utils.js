@@ -1,30 +1,62 @@
+import axios from "axios";
 import CryptoJS from "crypto-js"
 
 //export const REST_API = import.meta.env.VITE_REST_API
-export const REST_API = "https://7072-115-178-239-196.ngrok-free.app/"
+export const REST_API = "https://80e7-114-79-32-9.ngrok-free.app/"
+
+export async function checkValid(ip) {
+    try {
+        await axios
+            .post(REST_API + '/checkValid', {data: ip}, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "true", // Header ngrok-skip-browser-warning
+                },
+            })
+            .then((response) => {
+                console.log(response.data)
+                return response.canAbsen
+            })
+            .catch((error) => {
+                // setErrorList(prev => [...prev, error])
+                console.error("Error:", error)
+                return false
+            });
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+export function censorName(name) {
+    if (!name) return '-'
+
+    // Split the name into words
+    let words = name.split(' ')
+
+    // Censor the first word
+    if (words.length > 0) {
+        let firstWord = words[0].substring(0, 3) + '*'.repeat(words[0].length - 3)
+        words[0] = firstWord
+    }
+
+    // Iterate through each word starting from the second word
+    for (let i = 1; i < words.length; i++) {
+        // Censor all characters except the first letter
+        words[i] = words[i].charAt(0) + '*'.repeat(words[i].length - 1)
+    }
+
+    // Join the censored words and return
+    return words.join(' ')
+}
+
+// crypto and local storage
 
 export function encryptString(string) {
     const encryptedMessage = CryptoJS.AES.encrypt(string, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString()
     return encryptedMessage
 }
 
-export async function checkValid(ip) {
-    await axios
-        .post(REST_API + '/checkValid', {data: ip}, {
-            headers: {
-                "Content-Type": "application/json",
-                "ngrok-skip-browser-warning": "true", // Header ngrok-skip-browser-warning
-            },
-        })
-        .then((response) => {
-            console.log(response.data)
-            return response.canAbsen
-        })
-        .catch((error) => {
-            setErrorList(prev => [...prev, data])
-            console.error("Error:", error)
-        });
-}
 
 function encryptObject(object) {
     const jsonString = JSON.stringify(object)
@@ -89,26 +121,4 @@ export function getDecryptObjectLocalStorage(key) {
     } catch (error) {
         localStorage.removeItem(key)
     }
-}
-
-export function censorName(name) {
-    if (!name) return '-'
-
-    // Split the name into words
-    let words = name.split(' ')
-
-    // Censor the first word
-    if (words.length > 0) {
-        let firstWord = words[0].substring(0, 3) + '*'.repeat(words[0].length - 3)
-        words[0] = firstWord
-    }
-
-    // Iterate through each word starting from the second word
-    for (let i = 1; i < words.length; i++) {
-        // Censor all characters except the first letter
-        words[i] = words[i].charAt(0) + '*'.repeat(words[i].length - 1)
-    }
-
-    // Join the censored words and return
-    return words.join(' ')
 }
