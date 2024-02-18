@@ -63,7 +63,6 @@ export default function QrCodeGenerator() {
             </div>
             <div className="card-body text-center text-xl flex flex-col gap-2">
                 <span>Anda tidak dapat izin absen</span>
-                <div className="btn" onClick={() => navigate('/akun')}>Masuk ke akun</div>
             </div>
         </div>
     </div>
