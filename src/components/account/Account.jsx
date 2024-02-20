@@ -44,7 +44,7 @@ function FormAccount() {
     function handleSubmit(e) {
         e.preventDefault()
 
-        dispatch(setAccount({nama, nomor: '62' + nomor, kelas, nomorAbsen}))
+        dispatch(setAccount({nama: nama.trim(), nomor: '62' + nomor, kelas, nomorAbsen}))
     }
 
     const classOption = [{grade: 'X-E', length: 9}, {grade: 'XI-F', length: 8}, {grade: 'XII-MIPA', length: 5}, {grade: 'XII-IPS', length: 3}]
