@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js"
 // import { store } from "./redux/store";
 
 //export const REST_API = import.meta.env.VITE_REST_API
-export const REST_API = "https://de62-125-160-110-206.ngrok-free.app"
+export const REST_API = "https://d652-125-160-110-227.ngrok-free.app"
 
 export async function checkValid(ip) {
     // const be = store.getState().server.be
