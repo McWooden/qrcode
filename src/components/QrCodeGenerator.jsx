@@ -10,7 +10,7 @@ export default function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
     const navigate = useNavigate()
     const [ip, setIp] = useState('')
-    const [canAbsence, setCanAbsence] = useState(false)
+    const [canAbsence, setCanAbsence] = useState(true)
     const [isGettingPermission, setIsGettingPermission] = useState(false)
 
     const getIp = useCallback(async() => {
