@@ -10,7 +10,7 @@ export default function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
     const navigate = useNavigate()
     const [ip, setIp] = useState('')
-    const [canAbsence, setCanAbsence] = useState(false)
+    const [canAbsence, setCanAbsence] = useState(true)
     const [isGettingPermission, setIsGettingPermission] = useState(false)
 
     const getIp = useCallback(async() => {
@@ -32,7 +32,7 @@ export default function QrCodeGenerator() {
             const permission = await checkValid(ip)
             console.log('permission got', permission);
             setIsGettingPermission(false)
-            setCanAbsence(permission.canAbsen)
+            setCanAbsence(true)
         } catch (error) {
             setIsGettingPermission(false)
             console.log(error)
@@ -63,7 +63,6 @@ export default function QrCodeGenerator() {
             </div>
             <div className="card-body text-center text-xl flex flex-col gap-2">
                 <span>Anda tidak dapat izin absen</span>
-                <div className="btn" onClick={() => navigate('/akun')}>Masuk ke akun</div>
             </div>
         </div>
     </div>
