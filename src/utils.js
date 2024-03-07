@@ -1,22 +1,35 @@
 import axios from "axios";
-import CryptoJS from "crypto-js"
-// import { store } from "./redux/store";
+import { store } from "./redux/store";
+import cryptojs from "crypto-js";
+
+export function decryptObject(encryptedMessage) {
+    try {
+        const decryptedJsonString = cryptojs.AES.decrypt(encryptedMessage, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString(cryptojs.enc.Utf8)
+        const decryptedObject = JSON.parse(decryptedJsonString)
+    
+        return decryptedObject
+    } catch (error) {
+        console.log('error', error);
+    }
+}
 
 //export const REST_API = import.meta.env.VITE_REST_API
-export const REST_API = "https://43df-125-160-110-206.ngrok-free.app"
+// export const REST_API = "https://43df-125-160-110-206.ngrok-free.app"
+// const be = store.getState().server.be
+// console.log(be);
 
 export async function checkValid(ip) {
-    // const be = store.getState().server.be
+    const be = store?.getState()?.server?.be || ''
     try {
         const data = await axios
-            .get(REST_API + '/checkValid/' + ip, {
+            .get(be + '/checkValid/' + ip, {
                 headers: {
                     "Content-Type": "application/json",
                     "ngrok-skip-browser-warning": "true", // Header ngrok-skip-browser-warning
                 },
             })
             .then(res => {
-                console.log(REST_API + '/checkValid', ip, res)
+                console.log(be + '/checkValid', ip, res)
                 return res.data
                 // return res.data.canAbsen
             })
@@ -57,30 +70,35 @@ export function censorName(name) {
 // crypto and local storage
 
 export function encryptString(string) {
-    const encryptedMessage = CryptoJS.AES.encrypt(string, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString()
+    const encryptedMessage = cryptojs.AES.encrypt(string, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString()
     return encryptedMessage
 }
 export function decryptString(encryptedMessage) {
-    const decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, import.meta.env.VITE_CRYPTO_SECRET_KEY)
-    const decryptedJsonString = decryptedBytes.toString(CryptoJS.enc.Utf8)
+    const decryptedBytes = cryptojs.AES.decrypt(encryptedMessage, import.meta.env.VITE_CRYPTO_SECRET_KEY)
+    const decryptedJsonString = decryptedBytes.toString(cryptojs.enc.Utf8)
     return decryptedJsonString
 }
 
 export function encryptObject(object) {
     const jsonString = JSON.stringify(object)
 
-    const encryptedMessage = CryptoJS.AES.encrypt(jsonString, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString()
+    const encryptedMessage = cryptojs.AES.encrypt(jsonString, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString()
     return encryptedMessage
 }
 
-export function decryptObject(encryptedMessage) {
-    const decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, import.meta.env.VITE_CRYPTO_SECRET_KEY)
-    const decryptedJsonString = decryptedBytes.toString(CryptoJS.enc.Utf8)
-
-    const decryptedObject = JSON.parse(decryptedJsonString)
-
-    return decryptedObject
-}
+// export function decryptObject(encryptedMessage) {
+//     try {
+//         console.log('start');
+//         const decryptedJsonString = cryptojs.AES.decrypt(encryptedMessage, import.meta.env.VITE_CRYPTO_SECRET_KEY).toString(cryptojs.enc.Utf8)
+//         console.log('get json');
+    
+//         const decryptedObject = JSON.parse(decryptedJsonString)
+    
+//         return decryptedObject
+//     } catch (error) {
+//         console.log('error', error);
+//     }
+// }
 
 export function setLocalStorage(key, string) {
     localStorage.setItem(key, string)
@@ -99,7 +117,7 @@ export function setObjectLocalStorage(key, data) {
     const dataString = JSON.stringify(data)
     localStorage.setItem(key, dataString)
 }
-  
+
 export function getObjectLocalStorage(key) {
     const dataString = localStorage.getItem(key)
 
@@ -117,6 +135,7 @@ export function setEncryptObjectLocalStorage(key, data) {
 }
 
 export function getDecryptObjectLocalStorage(key) {
+    if (!key) return console.log('decrypt param not avaible');
     try {
         const dataString = localStorage.getItem(key)
         
@@ -127,6 +146,7 @@ export function getDecryptObjectLocalStorage(key) {
             return null
         }
     } catch (error) {
-        localStorage.removeItem(key)
+        console.log(error);
+        // localStorage.removeItem(key)
     }
 }

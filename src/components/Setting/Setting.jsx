@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setBe } from "../../redux/server"
 
@@ -8,12 +8,16 @@ export default function Setting() {
 
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        setServerUri(be)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+
     function handleSubmit(e) {
         e.preventDefault()
         dispatch(setBe(serverUri))
     }
     return <div className="flex flex-1 flex-col gap-2 items-center h-full p-6 pt-0">
-        <p>Current be: {be || ''}</p>
         <form className="flex flex-1 flex-col gap-2 max-w-xl w-full" onSubmit={handleSubmit}>
             <label className="form-control w-full">
                 <div className="label">

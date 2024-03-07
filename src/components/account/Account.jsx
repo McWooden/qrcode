@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setAccount } from "../../redux/account"
 import { useNavigate } from "react-router-dom"
+import { setEncryptObjectLocalStorage } from "../../utils"
 
 export default function Account() {
     const account = useSelector(state => state.account.data)
@@ -44,7 +45,10 @@ function FormAccount() {
     function handleSubmit(e) {
         e.preventDefault()
 
-        dispatch(setAccount({nama, nomor: '62' + nomor, kelas, nomorAbsen}))
+        const account = {nama, nomor: '62' + nomor, kelas, nomorAbsen, timestamp: +new Date()}
+
+        setEncryptObjectLocalStorage('account', account)
+        dispatch(setAccount(account))
     }
 
     const classOption = [{grade: 'X-E', length: 9}, {grade: 'XI-F', length: 8}, {grade: 'XII-MIPA', length: 5}, {grade: 'XII-IPS', length: 3}]
@@ -61,7 +65,10 @@ function FormAccount() {
                 <span className="label-text">Nomor handphone Ortu/wali</span>
             </div>
             <div className="flex items-center gap-2">
-                <span className="bg-base-200 h-full grid place-items-center rounded p-2">+62</span>
+                <select className="select select-bordered">
+                    <option value="+62">+62 🇮🇩</option>
+                </select>
+                {/* <span className="bg-base-200 h-full grid place-items-center rounded p-2">+62</span> */}
                 <input type="number" placeholder="81234567890" className="input input-bordered w-full" onChange={(e) => setNomor(e.target.value)} value={nomor} required/>
             </div>
         </label>

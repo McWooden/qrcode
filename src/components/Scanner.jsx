@@ -2,12 +2,14 @@ import { useCallback, useEffect, useState } from "react";
 import {QrScanner} from "react-qrcode-scanner";
 import { FaVideoSlash } from "react-icons/fa6";
 import axios from "axios";
-import { REST_API, censorName, decryptString, encryptString } from "../utils";
+import { censorName, decryptString, encryptString } from "../utils";
 import PropTypes from 'prop-types'; 
+import { useSelector } from "react-redux";
 
 export default function Scanner() {
     const [qrValue, setQrValue] = useState('')
     const [openCam, setOpenCam] = useState(false)
+    const be = useSelector(state => state.server.be)
     const [ip, setIp] = useState('')
 
     const handleScan = (value) => {
@@ -23,17 +25,17 @@ export default function Scanner() {
     
     const sendMessage = useCallback(async data => {
         const dataToSend = encryptString(decryptString(data) + `,${ip}`)
-        console.log('data', decryptString(data));
-        console.log('data to send', dataToSend);
+        // console.log('data', decryptString(data));
+        // console.log('data to send', dataToSend);
         await axios
-            .post(REST_API + '/sendMessage', {data: dataToSend}, {
+            .post(be + '/sendMessage', {data: dataToSend}, {
                 headers: {
                     "Content-Type": "application/json",
                     "ngrok-skip-browser-warning": "true", // Header ngrok-skip-browser-warning
                 },
             })
             .then((response) => {
-                console.log('res', response.data)
+                console.log('response', response.data)
                 setSucceedList(prev => [...prev, {qr: qrValue, res: response}])
                 setQrValue('')
             })
@@ -41,7 +43,7 @@ export default function Scanner() {
                 setErrorList(prev => [...prev, data])
                 console.error("Error:", error)
             });
-    },[ip, qrValue])
+    },[be, ip, qrValue])
 
     useEffect(() => {
         if (!qrValue) return
