@@ -13,9 +13,16 @@ export default function Setting() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
+    function removeNonAlphaNumeric(str) {
+        return str.replace(/^[^a-zA-Z0-9]+|[^a-zA-Z0-9]+$/g, '');
+    }
+
     function handleSubmit(e) {
         e.preventDefault()
-        dispatch(setBe(serverUri))
+
+        const filter = removeNonAlphaNumeric(serverUri)
+        setServerUri(filter)
+        dispatch(setBe(filter))
     }
     return <div className="flex flex-1 flex-col gap-2 items-center h-full p-6 pt-0">
         <form className="flex flex-1 flex-col gap-2 max-w-xl w-full" onSubmit={handleSubmit}>

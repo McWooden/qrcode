@@ -45,7 +45,7 @@ function FormAccount() {
     function handleSubmit(e) {
         e.preventDefault()
 
-        const account = {nama, nomor: '62' + nomor, kelas, nomorAbsen, timestamp: +new Date()}
+        const account = {nama: nama.trim(), nomor: '62' + nomor, kelas, nomorAbsen, timestamp: +new Date()}
 
         setEncryptObjectLocalStorage('account', account)
         dispatch(setAccount(account))
