@@ -32,7 +32,7 @@ export default function QrCodeGenerator() {
             const permission = await checkValid(ip)
             console.log('permission got', permission);
             setIsGettingPermission(false)
-            setCanAbsence(true)
+            setCanAbsence(permission.canAbsen)
         } catch (error) {
             setIsGettingPermission(false)
             console.log(error)
