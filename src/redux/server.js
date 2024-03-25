@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const server = createSlice({
     name: 'server',
     initialState: {
-        be: 'http://localhost:3001'
+        be: 'https://4679-47-89-133-238.ngrok-free.app'
     },
     reducers: {
         setBe: (state, action) => {
