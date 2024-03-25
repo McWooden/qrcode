@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getDecryptObjectLocalStorage } from "./utils";
 import { setAccount } from "./redux/accountSlice";
-import AlertBe from "./components/alert";
 
 
 function App() {
@@ -30,7 +29,6 @@ function App() {
   
   return <div className="App flex flex-col gap-2  min-h-screen">
     <Navbar/>
-    <AlertBe/>
     <Routes>
       <Route path="/" Component={Home}/>
       <Route path="/pemindai" Component={Scanner}/>

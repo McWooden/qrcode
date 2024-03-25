@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import server from './server'
 import accountSlice from './accountSlice'
+import source from './source'
 
 // import { createSlice } from "@reduxjs/toolkit";
 // import { getDecryptObjectLocalStorage, setEncryptObjectLocalStorage } from "../utils";
@@ -31,6 +32,7 @@ import accountSlice from './accountSlice'
 export const store = configureStore({
     reducer: {
         account: accountSlice || null,
-        server: server || null
+        server: server || null,
+        source: source || null
     },
 })

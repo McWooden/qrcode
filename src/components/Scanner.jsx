@@ -1,16 +1,25 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {QrScanner} from "react-qrcode-scanner";
 import { FaVideoSlash } from "react-icons/fa6";
 import axios from "axios";
 import { censorName, decryptString, encryptString } from "../utils";
 import PropTypes from 'prop-types'; 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setCamPermission } from "../redux/source";
 
 export default function Scanner() {
     const [qrValue, setQrValue] = useState('')
     const [openCam, setOpenCam] = useState(false)
     const be = useSelector(state => state.server.be)
+    const camPassword = useSelector(state => state.source.camPassword)
+    const isScanPermission = useSelector(state => state.source.isCamPermission)
     const [ip, setIp] = useState('')
+    const [inputPassword, setInputPassword] = useState('')
+
+    const openModalRef = useRef(null)
+    const closeModalRef = useRef(null)
+
+    const dispatch = useDispatch()
 
     const handleScan = (value) => {
         setQrValue(value)
@@ -45,6 +54,13 @@ export default function Scanner() {
             });
     },[be, ip, qrValue])
 
+    function handleSubmit(e) {
+        e.preventDefault()
+        console.log(camPassword === inputPassword, camPassword, inputPassword);
+        dispatch(setCamPermission(inputPassword))
+        closeModalRef.current.click()
+    }
+
     useEffect(() => {
         if (!qrValue) return
         sendMessage(qrValue)
@@ -62,6 +78,10 @@ export default function Scanner() {
             console.log(error);
         }
     },[])
+
+    function handleScanPermission() {
+        openModalRef.current.click()
+    }
 
     useEffect(() => {
         if (!ip) getIp()
@@ -84,9 +104,10 @@ export default function Scanner() {
                         </div>
                     }
                 <div className="flex gap-2 justify-between items-center">
-                    <div className="tooltip tooltip-right" data-tip={openCam ? 'Klik untuk menyalakan' : 'klik untuk mematikan'}>
+                    <div className="tooltip tooltip-right" data-tip={!openCam ? 'Klik untuk menyalakan' : 'klik untuk mematikan'}>
                         <input type="checkbox" className="toggle toggle-lg" checked={openCam} onChange={(e) => {
                             if (!e.target.checked) return window.location.reload()
+                            if (!isScanPermission) return handleScanPermission()
                             setOpenCam(e.target.checked)
                         }} />
                     </div>
@@ -102,6 +123,22 @@ export default function Scanner() {
         <div className="flex gap-2 p-2 w-full">
             <HistoryContainer items={errorList} tittle='Gagal'/>
             <HistoryContainer items={succeedList} tittle='Berhasil'/>
+        </div>
+        {/* The button to open modal */}
+        <label ref={openModalRef} htmlFor="my_modal_7" className="btn hidden">open modal</label>
+
+        {/* Put this part before </body> tag */}
+        <input type="checkbox" id="my_modal_7" className="modal-toggle" />
+        <div className="modal" role="dialog">
+            <form className="modal-box" onSubmit={handleSubmit}>
+                <h3 className="text-lg font-bold">Hello!</h3>
+                <p className="py-4">Masukkan password untuk menyalakan kamera</p>
+                <div className="flex gap-2">
+                    <input type="password" placeholder="Ketik disini" className="input input-bordered w-full" value={inputPassword} onChange={e => setInputPassword(e.target.value)}/>
+                    <button type="submit" className="btn btn-primary px-5">Kirim</button>
+                </div>
+            </form>
+            <label ref={closeModalRef} className="modal-backdrop" htmlFor="my_modal_7">Close</label>
         </div>
     </div>
 }

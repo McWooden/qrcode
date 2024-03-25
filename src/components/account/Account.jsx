@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { setAccount } from "../../redux/account"
+import { setAccount } from "../../redux/accountSlice"
 import { useNavigate } from "react-router-dom"
 import { setEncryptObjectLocalStorage } from "../../utils"
 

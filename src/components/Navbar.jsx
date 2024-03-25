@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { VscAccount } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
-import { logout } from "../redux/account";
+import { logout } from "../redux/accountSlice";
 
 export default function Navbar() {
     const navigate = useNavigate()
