@@ -80,7 +80,7 @@ export default function QrCodeGenerator() {
     </div>
 
     return <div className="flex flex-col gap-2 p-2">
-        <div className="card bg-base-100 shadow-xl overflow-hidden">
+        <div className="card bg-base-100 overflow-hidden">
             <div className="p-2 flex justify-center">
                 <div className="p-2 bg-neutral-100 rounded shadow">
                     <QRCode value={encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}/>
@@ -88,7 +88,15 @@ export default function QrCodeGenerator() {
             </div>
             <div className="card-body text-center text-xl flex flex-col gap-2">
                 <span>{censorName(account?.nama)}</span>
-                <p className="break-all">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}</p>
+            </div>
+            <div className="card-body text-center text-xl flex flex-col gap-2">
+                <div>
+                    <div role="alert" className="alert alert-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Tunjukkan Kode-Qr ke pemindai yang disediakan.</span>
+                    </div>
+                </div>
+                <p className="break-all text-xs">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}</p>
             </div>
         </div>
     </div>
