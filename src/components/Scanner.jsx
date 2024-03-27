@@ -154,22 +154,27 @@ export const HistoryContainer = (prop) => {
 }
 
 const History = prop => {
-    const status = prop.data.res.status
+    const status = prop?.data?.res?.status || 'network'
     return <div className="flex gap-2 shadow p-2 rounded flex-wrap">
-        <p className="break-all">{censorName(decryptString(prop.data.qr).split(',')[0])}</p>
+        <p className="break-all">{censorName(decryptString(prop?.data?.qr).split(',')[0])}</p>
+        {status === 'network' && <div className="badge badge-error gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <p>{prop?.data?.res?.data?.msg || 'Kesalahan network'}</p>
+            </div>
+        }
         {status === 400 && <div className="badge badge-error gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                <p>{prop.data.res.data.msg || 'Masalah pengguna'}</p>
+                <p>{prop?.data?.res?.data?.msg || 'Masalah pengguna'}</p>
             </div>
         }
         {status === 500 && <div className="badge badge-warning gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                <p>{prop.data.res.data.msg || 'Masalah server'}</p>
+                <p>{prop?.data?.res?.data?.msg || 'Masalah server'}</p>
             </div>
         }
         {status === 200 && <div className="badge badge-success gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                <p>{prop.data.res.data.msg || 'ok!'}</p>
+                <p>{prop?.data?.res?.data?.msg || 'ok!'}</p>
             </div>
         }
     </div>
