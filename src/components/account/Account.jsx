@@ -89,8 +89,7 @@ function FormAccount() {
     // }
 
     function handleNomorChange(value) {
-        const formattedNumber = value.replace(/\D/g,'').replace(/(\d{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'')
-
+        const formattedNumber = value
         formattedNumber.startsWith('8') ? setNomorError(false) : formattedNumber ? setNomorError(true) : setNomorError(false)
         setNomor(formattedNumber)
     }
@@ -101,6 +100,8 @@ function FormAccount() {
 
     function handleSubmit(e) {
         e.preventDefault()
+
+        setNomor(removeNonNumericChars(nomor))
 
         if (!nomor.startsWith('8')) return
 

@@ -33,7 +33,7 @@ export async function checkValid(ip) {
                 return {access: res.data.canAbsen, msg: res.data.canAbsen ? 
                     'Koneksi IP belum terpakai, anda bisa absen' 
                     : 
-                    'Koneksi IP sudah terpakai, anda tidak bisa absen'}
+                    'Koneksi IP sudah terpakai, anda tidak bisa absen (Hint: pakai koneksi data sendiri atau yang lain)'}
             })
             .catch(() => {
                 return {access: false, msg: 'Server tidak merespon atau sedang tidak dapat diakses'}
