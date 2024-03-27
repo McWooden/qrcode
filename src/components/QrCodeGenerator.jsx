@@ -52,11 +52,11 @@ export default function QrCodeGenerator() {
 
     if (isGettingPermission) return <div className="flex flex-col gap-2 items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
-        <p>Getting permission</p>
+        <p>Mendapatkan izin QrCode</p>
     </div>
     if (!ip) return <div className="flex items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
-        <p>Loading validation</p>
+        <p>Validasi pengguna</p>
     </div>
     
     if (!canAbsence) return <div className="flex flex-col gap-2 p-2">

@@ -89,7 +89,7 @@ export default function Scanner() {
 
     if (!ip) return <div className="flex items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
-        <p>Loading validation</p>
+        <p>Validasi Scanner</p>
     </div>
 
     return <div className="flex flex-col gap-2 p-2 flex-1">
