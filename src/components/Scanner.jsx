@@ -3,7 +3,6 @@ import {QrScanner} from "react-qrcode-scanner";
 import { FaVideoSlash } from "react-icons/fa6";
 import axios from "axios";
 import { censorName, decryptString, encryptString } from "../utils";
-import PropTypes from 'prop-types'; 
 import { useDispatch, useSelector } from "react-redux";
 import { setCamPermission } from "../redux/source";
 
@@ -49,16 +48,19 @@ export default function Scanner() {
                 setQrValue('')
             })
             .catch((error) => {
-                setErrorList(prev => [...prev, data])
+                setErrorList(prev => [...prev, {qr: qrValue, res: error.response}])
                 console.error("Error:", error)
             });
     },[be, ip, qrValue])
 
     function handleSubmit(e) {
         e.preventDefault()
-        console.log(camPassword === inputPassword, camPassword, inputPassword);
-        dispatch(setCamPermission(inputPassword))
-        closeModalRef.current.click()
+        if (camPassword === inputPassword) {
+            dispatch(setCamPermission(inputPassword))
+            closeModalRef.current.click()
+        } else {
+            setInputPassword('')
+        }
     }
 
     useEffect(() => {
@@ -118,6 +120,7 @@ export default function Scanner() {
                 <label className="form-control w-full">
                     <input type="text" placeholder="Nilai yang terbaca" className="input input-bordered w-full" value={qrValue} readOnly/>
                 </label>
+                <div className="btn btn-primary" onClick={() => setQrValue('')}>Bersihkan input diatas</div>
             </div>
         </div>
         <div className="flex gap-2 p-2 w-full">
@@ -131,8 +134,8 @@ export default function Scanner() {
         <input type="checkbox" id="my_modal_7" className="modal-toggle" />
         <div className="modal" role="dialog">
             <form className="modal-box" onSubmit={handleSubmit}>
-                <h3 className="text-lg font-bold">Hello!</h3>
-                <p className="py-4">Masukkan password untuk menyalakan kamera</p>
+                <h3 className="text-lg font-bold">Wohoo tahan!</h3>
+                <p className="py-4">Masukkan password sebelum menyalakan kamera.</p>
                 <div className="flex gap-2">
                     <input type="password" placeholder="Ketik disini" className="input input-bordered w-full" value={inputPassword} onChange={e => setInputPassword(e.target.value)}/>
                     <button type="submit" className="btn btn-primary px-5">Kirim</button>
@@ -150,13 +153,24 @@ export const HistoryContainer = (prop) => {
     </div>
 }
 
-function History({data}) {
-    return <div className="flex flex-col gap-2">
-        <p className="break-all shadow p-2">{censorName(decryptString(data.qr).split(',')[0])}</p>
+const History = prop => {
+    const status = prop.data.res.status
+    return <div className="flex gap-2 shadow p-2 rounded flex-wrap">
+        <p className="break-all">{censorName(decryptString(prop.data.qr).split(',')[0])}</p>
+        {status === 400 && <div className="badge badge-error gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <p>{prop.data.res.data.msg || 'Masalah pengguna'}</p>
+            </div>
+        }
+        {status === 500 && <div className="badge badge-warning gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <p>{prop.data.res.data.msg || 'Masalah server'}</p>
+            </div>
+        }
+        {status === 200 && <div className="badge badge-success gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <p>{prop.data.res.data.msg || 'ok!'}</p>
+            </div>
+        }
     </div>
 }
-
-History.propTypes = {
-    data: PropTypes.object.isRequired
-}
-

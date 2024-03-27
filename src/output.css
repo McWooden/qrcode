@@ -1433,6 +1433,30 @@ html{
   --alert-bg-mix: var(--fallback-b1,oklch(var(--b1)/1));
 }
 
+.badge-success{
+  border-color: transparent;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-su,oklch(var(--su)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-suc,oklch(var(--suc)/var(--tw-text-opacity)));
+}
+
+.badge-warning{
+  border-color: transparent;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-wa,oklch(var(--wa)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-wac,oklch(var(--wac)/var(--tw-text-opacity)));
+}
+
+.badge-error{
+  border-color: transparent;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-er,oklch(var(--er)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-erc,oklch(var(--erc)/var(--tw-text-opacity)));
+}
+
 .badge-outline{
   border-color: currentColor;
   --tw-border-opacity: 0.5;
@@ -2470,6 +2494,10 @@ html{
   margin-top: auto;
 }
 
+.inline-block{
+  display: inline-block;
+}
+
 .flex{
   display: flex;
 }
@@ -2506,6 +2534,10 @@ html{
   height: 100%;
 }
 
+.h-4{
+  height: 1rem;
+}
+
 .min-h-40{
   min-height: 10rem;
 }
@@ -2540,6 +2572,10 @@ html{
 
 .w-full{
   width: 100%;
+}
+
+.w-4{
+  width: 1rem;
 }
 
 .min-w-8{
@@ -2580,6 +2616,10 @@ html{
 
 .flex-col{
   flex-direction: column;
+}
+
+.flex-wrap{
+  flex-wrap: wrap;
 }
 
 .place-items-center{
