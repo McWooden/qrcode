@@ -11,6 +11,7 @@ export default function QrCodeGenerator() {
     const navigate = useNavigate()
     const [ip, setIp] = useState('')
     const [canAbsence, setCanAbsence] = useState(true)
+    const [textinfo, setTextinfo] = useState(true)
     const [isGettingPermission, setIsGettingPermission] = useState(false)
 
     const getIp = useCallback(async() => {
@@ -28,13 +29,15 @@ export default function QrCodeGenerator() {
     },[])
     
     const getPermissionAbsence = useCallback(async() => {
+        setTextinfo('')
         try {
             const permission = await checkValid(ip)
-            console.log('permission got', permission);
             setIsGettingPermission(false)
-            setCanAbsence(permission.canAbsen)
+            setCanAbsence(permission.access)
+            setTextinfo(permission.msg)
         } catch (error) {
             setIsGettingPermission(false)
+            setTextinfo('Server error')
             console.log(error)
         }
     },[ip])
@@ -62,7 +65,7 @@ export default function QrCodeGenerator() {
                 <TbQrcodeOff className="text-9xl"/>
             </div>
             <div className="card-body text-center text-xl flex flex-col gap-2">
-                <span>Anda tidak dapat izin absen</span>
+                <span>{textinfo}</span>
             </div>
         </div>
     </div>

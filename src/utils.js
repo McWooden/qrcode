@@ -30,18 +30,17 @@ export async function checkValid(ip) {
             })
             .then(res => {
                 console.log(be + '/checkValid', ip, res)
-                return res.data
-                // return res.data.canAbsen
+                return {access: res.data.canAbsen, msg: res.data.canAbsen ? 
+                    'Koneksi IP belum terpakai, anda bisa absen' 
+                    : 
+                    'Koneksi IP sudah terpakai, anda tidak bisa absen'}
             })
             .catch(() => {
-                // setErrorList(prev => [...prev, error])
-                return false
-            });
-            // console.log('data:', data);
+                return {access: false, msg: 'Server tidak merespon atau sedang tidak dapat diakses'}
+            })
         return data
     } catch (error) {
-        console.log(error);
-        return false
+        return {access: false, msg: 'Client error'}
     }
 }
 

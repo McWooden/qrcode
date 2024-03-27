@@ -120,9 +120,9 @@ function FormAccount() {
         </div>
         <label className="form-control w-full">
             <div className="label">
-                <span className="label-text">Siapa namamu?</span>
+                <span className="label-text">Ketik nama</span>
             </div>
-            <input type="text" placeholder="Ketik nama" className="input input-bordered w-full" onChange={handleNameChange} value={nama} required/>
+            <input type="text" placeholder="Ketik nama disini" className="input input-bordered w-full" onChange={handleNameChange} value={nama} required/>
         </label>
         <label className="form-control w-full">
             <div className="label">
