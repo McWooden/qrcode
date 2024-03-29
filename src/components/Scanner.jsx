@@ -1,10 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {QrScanner} from "react-qrcode-scanner";
 import { FaVideoSlash } from "react-icons/fa6";
 import axios from "axios";
 import { censorName, decryptString, encryptString } from "../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setCamPermission } from "../redux/source";
+import readSound from '../assets/sound/scanOnRead.mp3'
+import successSound from '../assets/sound/scanOnSuccess.mp3'
+import errorSound from '../assets/sound/scanOnError.mp3'
 
 export default function Scanner() {
     const [qrValue, setQrValue] = useState('')
@@ -18,9 +21,15 @@ export default function Scanner() {
     const openModalRef = useRef(null)
     const closeModalRef = useRef(null)
 
+    const scanOnRead = new Audio(readSound)
+    const scanOnSuccess = useMemo(() => new Audio(successSound),[]) 
+    const scanOnError = useMemo(() => new Audio(errorSound),[]) 
+
     const dispatch = useDispatch()
 
     const handleScan = (value) => {
+        scanOnRead.currentTime = 0
+        scanOnRead.play()
         setQrValue(value)
     }
 
@@ -46,19 +55,24 @@ export default function Scanner() {
                 console.log('response', response.data)
                 setSucceedList(prev => [...prev, {qr: qrValue, res: response}])
                 setQrValue('')
-            })
-            .catch((error) => {
+                scanOnSuccess.currentTime = 0
+                scanOnSuccess.play()
+            }).catch((error) => {
+                scanOnError.currentTime = 0
+                scanOnError.play()
                 setErrorList(prev => [...prev, {qr: qrValue, res: error.response}])
                 console.error("Error:", error)
             });
-    },[be, ip, qrValue])
+    },[be, ip, qrValue, scanOnError, scanOnSuccess])
 
     function handleSubmit(e) {
         e.preventDefault()
         if (camPassword === inputPassword) {
             dispatch(setCamPermission(inputPassword))
+            scanOnRead.play()
             closeModalRef.current.click()
         } else {
+            scanOnError.play()
             setInputPassword('')
         }
     }
@@ -121,6 +135,23 @@ export default function Scanner() {
                     <input type="text" placeholder="Nilai yang terbaca" className="input input-bordered w-full" value={qrValue} readOnly/>
                 </label>
                 <div className="btn btn-primary" onClick={() => setQrValue('')}>Bersihkan input diatas</div>
+                {/* <div className="flex flex-col gap-2">
+                    <div className="btn" onClick={() => {
+                        console.log('qr code terbaca!');
+                        scanOnRead.currentTime = 0
+                        scanOnRead.play()
+                    }}>Read</div>
+                    <div className="btn" onClick={() => {
+                        console.log('pesan berhasil dikirim!');
+                        scanOnSuccess.currentTime = 0
+                        scanOnSuccess.play()
+                    }}>success</div>
+                    <div className="btn" onClick={() => {
+                    console.log('Error!');
+                        scanOnError.currentTime = 0
+                        scanOnError.play()
+                    }}>error</div>
+                </div> */}
             </div>
         </div>
         <div className="flex gap-2 p-2 w-full">
@@ -149,7 +180,7 @@ export default function Scanner() {
 export const HistoryContainer = (prop) => {
     return <div className="flex flex-col gap-2 flex-1 bg-base-100 p-2 rounded">
         <h3 className="text-semibold text-md">{prop.tittle}</h3>
-        {prop.items.map((e, i) => <History key={i} data={e}/>)}
+        {prop.items.reverse().map((e, i) => <History key={i} data={e}/>)}
     </div>
 }
 

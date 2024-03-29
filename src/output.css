@@ -2514,6 +2514,10 @@ html{
   height: 5rem;
 }
 
+.h-4{
+  height: 1rem;
+}
+
 .h-5{
   height: 1.25rem;
 }
@@ -2534,10 +2538,6 @@ html{
   height: 100%;
 }
 
-.h-4{
-  height: 1rem;
-}
-
 .min-h-40{
   min-height: 10rem;
 }
@@ -2548,6 +2548,10 @@ html{
 
 .w-28{
   width: 7rem;
+}
+
+.w-4{
+  width: 1rem;
 }
 
 .w-4\/12{
@@ -2572,10 +2576,6 @@ html{
 
 .w-full{
   width: 100%;
-}
-
-.w-4{
-  width: 1rem;
 }
 
 .min-w-8{
