@@ -99,7 +99,7 @@ export default function QrCodeGenerator() {
                         <span>Tunjukkan Kode-Qr ke pemindai yang disediakan sekolah.</span>
                     </div>
                 </div>
-                <p className="break-all text-xs">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}</p>
+                <p className="break-all text-xs">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip},${+new Date()}`)}</p>
             </div>
         </div>
     </div>
