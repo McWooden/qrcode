@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import QRCode from "react-qr-code";
+import blockQr from '../assets/blockQr.png'
 
 export default function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
@@ -83,9 +84,14 @@ export default function QrCodeGenerator() {
     </div>
 
     return <div className="flex flex-col gap-2 p-2">
+        <div className="flex flex-col gap-2 items-center text-center my-auto">
+            <img src={blockQr} alt="id card" className="h-20"/>
+            <h3 className="font-bold text-lg">Bersiaplah!</h3>
+            <p className="text-neutral-500 text-sm font-semibold">Tunjukkan Kode-Qr ke pemindai yang disediakan sekolah.</p>
+        </div>
         <div className="card bg-base-100 overflow-hidden">
             <div className="p-2 flex justify-center">
-                <div className="p-2 bg-neutral-100 rounded shadow">
+                <div className="p-2 bg-neutral-100 rounded shadow-lg">
                     <QRCode value={encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}/>
                 </div>
             </div>
@@ -93,13 +99,13 @@ export default function QrCodeGenerator() {
                 <span>{censorName(account?.nama)}</span>
             </div>
             <div className="card-body text-center text-xl flex flex-col gap-2">
-                <div>
+                {/* <div>
                     <div role="alert" className="alert alert-info">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <span>Tunjukkan Kode-Qr ke pemindai yang disediakan sekolah.</span>
                     </div>
-                </div>
-                <p className="break-all text-xs">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip},${+new Date()}`)}</p>
+                </div> */}
+                <p className="break-all text-xs">QrCode Id: {encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip},${+new Date()}`)}</p>
             </div>
         </div>
     </div>

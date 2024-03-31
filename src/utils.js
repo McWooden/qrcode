@@ -1,6 +1,13 @@
 import axios from "axios";
 import { store } from "./redux/store";
 import cryptojs from "crypto-js";
+import { io } from 'socket.io-client';
+
+
+const URL = import.meta.env.VITE_REST_API || 'http://localhost:3001'
+
+export const socket = io(URL);
+
 
 export function decryptObject(encryptedMessage) {
     try {
@@ -17,6 +24,7 @@ export function decryptObject(encryptedMessage) {
 // export const REST_API = "https://43df-125-160-110-206.ngrok-free.app"
 // const be = store.getState().server.be
 // console.log(be);
+
 
 export async function checkValid(ip) {
     const be = store?.getState()?.server?.be || ''
