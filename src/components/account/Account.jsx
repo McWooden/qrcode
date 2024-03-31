@@ -46,25 +46,25 @@ function CardAccount() {
             </div>
         </div>
         <div className="btn" onClick={() => navigate('/qrcode')}>Tunjukkan QrCode</div> */}
-        <div className="flex flex-col justify-between rounded-md bg-slate-50 w-[300px] shadow-md">
+        <div className="flex flex-col justify-between rounded-md bg-slate-50 shadow-md">
             <div className="relative mt-6 mx-4 p-2 rounded-md bg-accent shadow shadow-accent">
                 <p className="text-600 font-semibold text-center">Ini adalah akunmu</p>
             </div>
             <div className="p-6">
-                <div className="flex flex-col w-full max-w-sm p-6">
-                    <div className="flex">
+                <div className="flex flex-col w-full max-w-sm p-2">
+                    <div className="flex gap-1">
                         <div className="w-4/12">Nama</div>
                         <p className="w-8-12">{account?.nama}</p>
                     </div>
-                    <div className="flex">
+                    <div className="flex gap-1">
                         <div className="w-4/12">Nomor</div>
                         <p className="w-8-12">+62 {account?.nomor}</p>
                     </div>
-                    <div className="flex">
+                    <div className="flex gap-1">
                         <div className="w-4/12">Kelas</div>
                         <p className="w-8-12">{account?.kelas}</p>
                     </div>
-                    <div className="flex">
+                    <div className="flex gap-1">
                         <div className="w-4/12">Abs</div>
                         <p className="w-8-12">{account?.nomorAbsen}</p>
                     </div>

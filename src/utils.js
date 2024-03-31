@@ -1,12 +1,11 @@
 import axios from "axios";
 import { store } from "./redux/store";
 import cryptojs from "crypto-js";
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 
 
-const URL = import.meta.env.VITE_REST_API || 'http://localhost:3001'
-
-export const socket = io(URL);
+// const URL = import.meta.env.VITE_REST_API || 'http://localhost:3001'
+// export const socket = io(URL);
 
 
 export function decryptObject(encryptedMessage) {
@@ -60,7 +59,7 @@ export function censorName(name) {
 
     // Censor the first word
     if (words.length > 0) {
-        let firstWord = words[0].substring(0, 3) + '*'.repeat(words[0].length - 3)
+        let firstWord = words[0].substring(0, 3) + '-'.repeat(words[0].length - 3)
         words[0] = firstWord
     }
 

@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux";
-import { censorName, checkValid, encryptString } from "../utils";
+import { checkValid, encryptString } from "../utils";
 import { TbQrcodeOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import blockQr from '../assets/blockQr.png'
+import HideName from "./HideName";
 
 export default function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
@@ -95,8 +96,8 @@ export default function QrCodeGenerator() {
                     <QRCode value={encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}/>
                 </div>
             </div>
-            <div className="card-body text-center text-xl flex flex-col gap-2">
-                <span>{censorName(account?.nama)}</span>
+            <div className="text-xl flex flex-col gap-2">
+                <HideName name={account?.nama}/>
             </div>
             <div className="card-body text-center text-xl flex flex-col gap-2">
                 {/* <div>
@@ -105,7 +106,7 @@ export default function QrCodeGenerator() {
                         <span>Tunjukkan Kode-Qr ke pemindai yang disediakan sekolah.</span>
                     </div>
                 </div> */}
-                <p className="break-all text-xs">QrCode Id: {encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip},${+new Date()}`)}</p>
+                <p className="break-all text-xs bg-neutral-300 rounded-lg p-2">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip},${+new Date()}`)}</p>
             </div>
         </div>
     </div>

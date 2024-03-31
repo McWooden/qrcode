@@ -2,12 +2,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {QrScanner} from "react-qrcode-scanner";
 import { FaVideoSlash } from "react-icons/fa6";
 import axios from "axios";
-import { censorName, decryptString, encryptString } from "../utils";
+import { decryptString, encryptString } from "../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setCamPermission } from "../redux/source";
 import readSound from '../assets/sound/scanOnRead.mp3'
 import successSound from '../assets/sound/scanOnSuccess.mp3'
 import errorSound from '../assets/sound/scanOnError.mp3'
+import HideName from "./HideName";
 
 export default function Scanner() {
     const [qrValue, setQrValue] = useState('')
@@ -120,7 +121,7 @@ export default function Scanner() {
                         </div>
                     }
                 <div className="flex gap-2 justify-between items-center">
-                    <div className="tooltip tooltip-right" data-tip={!openCam ? 'Klik untuk menyalakan' : 'klik untuk mematikan'}>
+                    <div className={`tooltip tooltip-right ${!openCam && 'tooltip-open'}`} data-tip={!openCam ? 'Klik untuk menyalakan' : 'klik untuk mematikan'}>
                         <input type="checkbox" className="toggle toggle-lg" checked={openCam} onChange={(e) => {
                             if (!e.target.checked) return window.location.reload()
                             if (!isScanPermission) return handleScanPermission()
@@ -155,8 +156,8 @@ export default function Scanner() {
             </div>
         </div>
         <div className="flex gap-2 p-2 w-full">
-            <HistoryContainer items={errorList} tittle='Gagal'/>
-            <HistoryContainer items={succeedList} tittle='Berhasil'/>
+            <HistoryContainer items={errorList} title='Gagal'/>
+            <HistoryContainer items={succeedList} title='Berhasil'/>
         </div>
         {/* The button to open modal */}
         <label ref={openModalRef} htmlFor="my_modal_7" className="btn hidden">open modal</label>
@@ -178,16 +179,21 @@ export default function Scanner() {
 }
 
 export const HistoryContainer = (prop) => {
-    return <div className="flex flex-col gap-2 flex-1 bg-base-100 p-2 rounded">
-        <h3 className="text-semibold text-md">{prop.tittle}</h3>
-        {prop.items.reverse().map((e, i) => <History key={i} data={e}/>)}
+    let success = prop.title === 'Berhasil' ? true : false
+    return <div className={`flex flex-col gap-2 flex-1 bg-base-100 rounded ${success ? 'border border-1 border-primary' : 'border border-1 border-error'}`}>
+        <h3 className={`text-semibold text-md p-2 ${success ? 'bg-primary' : 'bg-error'}`}>{prop.title}</h3>
+        <div className="flex flex-col gap-2 p-2">
+            {prop.items.reverse().map((e, i) => <History key={i} data={e}/>)}
+        </div>
     </div>
 }
 
 const History = prop => {
     const status = prop?.data?.res?.status || 'network'
-    return <div className="flex gap-2 shadow p-2 rounded flex-wrap">
-        <p className="break-all">{censorName(decryptString(prop?.data?.qr).split(',')[0])}</p>
+    return <div className="flex gap-2 shadow p-2 rounded flex-wrap items-center bg-neutral-100">
+        <div>
+            <HideName name={decryptString(prop?.data?.qr)?.split(',')[0]}/>
+        </div>
         {status === 'network' && <div className="badge badge-error gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 <p>{prop?.data?.res?.data?.msg || 'Kesalahan network'}</p>
