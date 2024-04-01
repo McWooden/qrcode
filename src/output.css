@@ -2514,6 +2514,10 @@ html{
   visibility: hidden;
 }
 
+.absolute{
+  position: absolute;
+}
+
 .relative{
   position: relative;
 }
@@ -2568,6 +2572,10 @@ html{
   height: 5rem;
 }
 
+.h-24{
+  height: 6rem;
+}
+
 .h-4{
   height: 1rem;
 }
@@ -2592,12 +2600,21 @@ html{
   height: 100%;
 }
 
+.h-fit{
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
 .min-h-40{
   min-height: 10rem;
 }
 
 .min-h-screen{
   min-height: 100vh;
+}
+
+.w-24{
+  width: 6rem;
 }
 
 .w-28{
@@ -2626,6 +2643,11 @@ html{
 
 .w-8{
   width: 2rem;
+}
+
+.w-fit{
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .w-full{
@@ -2718,6 +2740,10 @@ html{
   overflow: hidden;
 }
 
+.overflow-visible{
+  overflow: visible;
+}
+
 .break-all{
   word-break: break-all;
 }
@@ -2728,6 +2754,10 @@ html{
 
 .rounded-box{
   border-radius: var(--rounded-box, 1rem);
+}
+
+.rounded-daunKapas{
+  border-radius: 17% 83% 88% 12% / 14% 59% 41% 86%;
 }
 
 .rounded-full{
@@ -2803,6 +2833,11 @@ html{
   background-color: var(--fallback-er,oklch(var(--er)/var(--tw-bg-opacity)));
 }
 
+.bg-green-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 197 94 / var(--tw-bg-opacity));
+}
+
 .bg-neutral{
   --tw-bg-opacity: 1;
   background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
@@ -2813,11 +2848,6 @@ html{
   background-color: rgb(245 245 245 / var(--tw-bg-opacity));
 }
 
-.bg-neutral-200{
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 229 229 / var(--tw-bg-opacity));
-}
-
 .bg-neutral-300{
   --tw-bg-opacity: 1;
   background-color: rgb(212 212 212 / var(--tw-bg-opacity));
@@ -2826,6 +2856,11 @@ html{
 .bg-primary{
   --tw-bg-opacity: 1;
   background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
+}
+
+.bg-sky-600{
+  --tw-bg-opacity: 1;
+  background-color: rgb(2 132 199 / var(--tw-bg-opacity));
 }
 
 .bg-slate-50{
@@ -2839,6 +2874,10 @@ html{
 
 .stroke-current{
   stroke: currentColor;
+}
+
+.p-0{
+  padding: 0px;
 }
 
 .p-1{
@@ -2874,6 +2913,10 @@ html{
 
 .pt-0{
   padding-top: 0px;
+}
+
+.pt-4{
+  padding-top: 1rem;
 }
 
 .text-center{
@@ -2927,6 +2970,11 @@ html{
   color: var(--fallback-er,oklch(var(--er)/var(--tw-text-opacity)));
 }
 
+.text-neutral-100{
+  --tw-text-opacity: 1;
+  color: rgb(245 245 245 / var(--tw-text-opacity));
+}
+
 .text-neutral-300{
   --tw-text-opacity: 1;
   color: rgb(212 212 212 / var(--tw-text-opacity));
@@ -2945,6 +2993,10 @@ html{
 .text-red-600{
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
+}
+
+.opacity-75{
+  opacity: 0.75;
 }
 
 .shadow{

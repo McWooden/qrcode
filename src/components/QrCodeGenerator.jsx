@@ -93,7 +93,7 @@ export default function QrCodeGenerator() {
         <div className="card bg-base-100 overflow-hidden">
             <div className="p-2 flex justify-center">
                 <div className="p-2 bg-neutral-100 rounded shadow-lg">
-                    <QRCode value={encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}/>
+                    <MyQrCode value={encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}/>
                 </div>
             </div>
             <div className="text-xl flex flex-col gap-2">
@@ -106,8 +106,33 @@ export default function QrCodeGenerator() {
                         <span>Tunjukkan Kode-Qr ke pemindai yang disediakan sekolah.</span>
                     </div>
                 </div> */}
-                <p className="break-all text-xs bg-neutral-300 rounded-lg p-2">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip},${+new Date()}`)}</p>
+                <p className="break-all text-xs bg-neutral-300 rounded-lg p-2 select-none">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip},${+new Date()}`)}</p>
             </div>
+        </div>
+    </div>
+}
+
+function MyQrCode(prop) {
+    const account = useSelector(state => state.account.data)
+
+    return <div>
+        <label htmlFor="my_modal_7" className="cursor-pointer">
+            <QRCode value={prop.value}/>
+        </label>
+        <input type="checkbox" id="my_modal_7" className="modal-toggle" />
+        <div className="modal" role="dialog">
+            <div className="modal-box w-fit bg-sky-600 p-0 pt-4 relative overflow-visible h-fit">
+                <div className="flex flex-col p-4">
+                        <div className="flex flex-col gap-2 items-center bg-base-100 p-2 rounded-md">
+                            <QRCode value={prop.value}/>
+                        </div>
+                    <div className="p-4 text-neutral-100">
+                        <HideName name={account?.nama}/>
+                    </div>
+                </div>
+                <div className="rounded-daunKapas bg-green-500 h-24 w-24 shadow absolute -t-4 -r-4"/>
+            </div>
+            <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
         </div>
     </div>
 }

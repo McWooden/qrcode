@@ -8,6 +8,9 @@ export const theme = {
   extend: {
     flex: {
       '2': '2 2 0%'
+    },
+    borderRadius: {
+      'daunKapas': '17% 83% 88% 12% / 14% 59% 41% 86%'
     }
   },
 };
