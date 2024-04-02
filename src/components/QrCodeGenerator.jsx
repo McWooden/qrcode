@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import blockQr from '../assets/blockQr.png'
 import HideName from "./HideName";
+import getBrowserFingerprint from 'get-browser-fingerprint'
 
 export default function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
@@ -106,7 +107,7 @@ export default function QrCodeGenerator() {
                         <span>Tunjukkan Kode-Qr ke pemindai yang disediakan sekolah.</span>
                     </div>
                 </div> */}
-                <p className="break-all text-xs bg-neutral-300 rounded-lg p-2 select-none">{encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip},${+new Date()}`)}</p>
+                <p className="break-all text-xs bg-neutral-300 rounded-lg p-2 select-none">{getBrowserFingerprint()} {encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip},${+new Date()}`)}</p>
             </div>
         </div>
     </div>

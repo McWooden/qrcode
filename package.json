@@ -17,6 +17,7 @@
     "crypto-js": "^4.2.0",
     "crypto.js": "^3.2.0",
     "dotenv": "^16.4.1",
+    "get-browser-fingerprint": "^3.2.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

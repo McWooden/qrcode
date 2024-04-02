@@ -136,6 +136,7 @@ export default function Scanner() {
                     <input type="text" placeholder="Nilai yang terbaca" className="input input-bordered w-full" value={qrValue} readOnly/>
                 </label>
                 <div className="btn btn-primary" onClick={() => setQrValue('')}>Bersihkan input diatas</div>
+                {/* <ChatApp/> */}
                 {/* <div className="flex flex-col gap-2">
                     <div className="btn" onClick={() => {
                         console.log('qr code terbaca!');
@@ -216,3 +217,52 @@ const History = prop => {
         }
     </div>
 }
+
+// const Message = (prop) => {
+//   useEffect(() => {
+//     const timeout = setInterval(() => {
+//       const currentTime = +new Date();
+//       const messageTime = prop.id
+//       if (currentTime - messageTime >= 3000) {
+//         prop.onRemove(prop.id);
+//       }
+//     }, 500); // Check every second for efficiency, as opposed to 3000ms
+
+//     return () => clearInterval(timeout);
+//   }, [prop, prop.id, prop.onRemove]);
+
+//   return <div>{prop.text}</div>;
+// };
+
+// const ChatApp = () => {
+//   const [messages, setMessages] = useState([]);
+
+//   const removeMessage = (id) => {
+//     setMessages(prevMessages => prevMessages.filter(message => message.id !== id));
+//   };
+
+//   const addMessage = (text) => {
+//     const id = +new Date(); // Converting to ISO string format
+//     setMessages(prevMessages => [...prevMessages, { id, text }]);
+//   };
+
+//   return (
+//     <div>
+//       {messages.map(message => (
+//         <Message key={message.id} id={message.id} text={message.text} onRemove={removeMessage} />
+//       ))}
+//       <div>
+//         <input
+//           type="text"
+//           placeholder="Enter a new message"
+//           onKeyDown={(e) => {
+//             if (e.key === 'Enter') {
+//               addMessage(e.target.value);
+//               e.target.value = '';
+//             }
+//           }}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
