@@ -122,15 +122,27 @@ function MyQrCode(prop) {
         <input type="checkbox" id="my_modal_7" className="modal-toggle" />
         <div className="modal" role="dialog">
             <div className="modal-box w-fit bg-sky-600 p-0 pt-4 relative overflow-visible h-fit">
-                <div className="flex flex-col p-4">
-                        <div className="flex flex-col gap-2 items-center bg-base-100 p-2 rounded-md">
-                            <QRCode value={prop.value}/>
+                <div className="flex flex-col p-4 relative pb-12">
+                    <div className="flex flex-col gap-2 items-center bg-base-100 p-2 rounded-md">
+                        <QRCode value={prop.value}/>
+                    </div>
+                    <div className="absolute p-4 text-neutral-100 -bottom-12 inset-x-0 flex justify-center">
+                        <div className="bg-red-600 rounded shadow w-[90%] min-h-16 flex items-center">
+                            <HideName name={account?.nama}/>
                         </div>
-                    <div className="p-4 text-neutral-100">
-                        <HideName name={account?.nama}/>
                     </div>
                 </div>
-                <div className="rounded-daunKapas bg-green-500 h-24 w-24 shadow absolute -t-4 -r-4"/>
+                <div className="rounded-daunKapas bg-neutral-300 h-24 w-24 shadow absolute bottom-[12rem] -right-6 -z-[1]"/>
+                <div className="rounded-daunKapas bg-green-600 h-28 w-28 shadow absolute bottom-[9rem] -right-3 -z-[1]"/>
+                <div className="rounded-daunKapas bg-neutral-300 h-24 w-24 shadow absolute bottom-[6rem] -right-6 -z-[1]"/>
+                <div className="rounded-daunKapas bg-green-600 h-28 w-28 shadow absolute bottom-[3rem] -right-3 -z-[1]"/>
+
+                <div className="rounded-padi bg-amber-300 h-28 w-28 shadow-lg absolute top-[1rem] -left-2 -z-[1]"/>
+                <div className="rounded-padi bg-amber-300 h-28 w-28 shadow-lg absolute top-[3.5rem] -left-2 -z-[1]"/>
+                <div className="rounded-padi bg-amber-300 h-28 w-28 shadow-lg absolute top-[6rem] -left-2 -z-[1]"/>
+                <div className="rounded-padi bg-amber-300 h-28 w-28 shadow-lg absolute top-[9.5rem] -left-2 -z-[1]"/>
+
+                <div className="text-red-600 absolute -top-24 right-0 -z-[1] text-[9rem] font-bold rotate-3">3</div>
             </div>
             <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
         </div>
