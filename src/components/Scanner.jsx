@@ -12,6 +12,7 @@ import HideName from "./HideName";
 
 export default function Scanner() {
     const [qrValue, setQrValue] = useState('')
+    const [queue, setQueue] = useState([])
     const [openCam, setOpenCam] = useState(false)
     const be = useSelector(state => state.server.be)
     const camPassword = useSelector(state => state.source.camPassword)
@@ -43,9 +44,7 @@ export default function Scanner() {
     
     const sendMessage = useCallback(async data => {
         const dataToSend = encryptString(decryptString(data) + `,${ip}`)
-        // console.log('data', decryptString(data));
-        // console.log('data to send', dataToSend);
-        await axios
+        const status = await axios
             .post(be + '/sendMessage', {data: dataToSend}, {
                 headers: {
                     "Content-Type": "application/json",
@@ -55,15 +54,17 @@ export default function Scanner() {
             .then((response) => {
                 console.log('response', response.data)
                 setSucceedList(prev => [...prev, {qr: qrValue, res: response}])
-                setQrValue('')
                 scanOnSuccess.currentTime = 0
                 scanOnSuccess.play()
+                return true
             }).catch((error) => {
                 scanOnError.currentTime = 0
                 scanOnError.play()
                 setErrorList(prev => [...prev, {qr: qrValue, res: error.response}])
                 console.error("Error:", error)
-            });
+                return false
+            })
+        return status
     },[be, ip, qrValue, scanOnError, scanOnSuccess])
 
     function handleSubmit(e) {
@@ -78,10 +79,15 @@ export default function Scanner() {
         }
     }
 
+    // useEffect(() => {
+    //     if (!qrValue) return
+    //     sendMessage(qrValue)
+    // }, [qrValue, sendMessage])
     useEffect(() => {
         if (!qrValue) return
-        sendMessage(qrValue)
-    }, [qrValue, sendMessage])
+        if (queue.find(e => e === qrValue)) setQueue(prev => prev.push(qrValue))
+        setQrValue('')
+    }, [qrValue, queue])
 
     const getIp = useCallback(async() => {
         try {
@@ -114,10 +120,11 @@ export default function Scanner() {
             <div className="flex flex-col gap-2 h-[50%] flex-2 p-2 bg-base-200">
                     {openCam ?
                         <QrScanner onScan={handleScan} onError={handleError}/>
-                    :
+                        :
                         <div className="flex justify-center items-center gap-2 min-h-40 flex-col p-4 bg-neutral text-neutral-content rounded py-16">
                             <FaVideoSlash className="text-[7em] text-error"/>
                             <span>Kamera belum dinyalakan</span>
+                            <span className={`text-sm ${isScanPermission ? 'invisible' : 'visible'}`}>(Silahkan masukkan password)</span>
                         </div>
                     }
                 <div className="flex gap-2 justify-between items-center">
@@ -135,25 +142,14 @@ export default function Scanner() {
                 <label className="form-control w-full">
                     <input type="text" placeholder="Nilai yang terbaca" className="input input-bordered w-full" value={qrValue} readOnly/>
                 </label>
+                {queue.map(e => <NodeQueue key={e} value={e} sendMessage={sendMessage} removeFromQueue={() => setQueue(prev => prev.filter(x => x != e))}/> )}
+                {/* {qrValue && <div className="flex gap-2 items-center shadow p-2 px-4">
+                        <HideName name={decryptString(qrValue)?.split(',')[0]}/>
+                        <span className="loading loading-dots loading-sm"></span>
+                    </div>
+                } */}
                 <div className="btn btn-primary" onClick={() => setQrValue('')}>Bersihkan input diatas</div>
                 {/* <ChatApp/> */}
-                {/* <div className="flex flex-col gap-2">
-                    <div className="btn" onClick={() => {
-                        console.log('qr code terbaca!');
-                        scanOnRead.currentTime = 0
-                        scanOnRead.play()
-                    }}>Read</div>
-                    <div className="btn" onClick={() => {
-                        console.log('pesan berhasil dikirim!');
-                        scanOnSuccess.currentTime = 0
-                        scanOnSuccess.play()
-                    }}>success</div>
-                    <div className="btn" onClick={() => {
-                    console.log('Error!');
-                        scanOnError.currentTime = 0
-                        scanOnError.play()
-                    }}>error</div>
-                </div> */}
             </div>
         </div>
         <div className="flex gap-2 p-2 w-full">
@@ -215,6 +211,27 @@ const History = prop => {
                 <p>{prop?.data?.res?.data?.msg || 'ok!'}</p>
             </div>
         }
+    </div>
+}
+
+function NodeQueue(prop) {
+    const [isFetch, setIsFetch] = useState(false)
+
+    const sendMessage = useCallback(async () => {
+        setIsFetch(true)
+        await prop.sendMessage()
+        prop.removeFromQueue()
+    }, [prop])
+    
+
+    useEffect(() => {
+        if (isFetch) return
+        sendMessage()
+    },[isFetch, sendMessage])
+
+    return <div className="flex gap-2 items-center shadow p-2 px-4">
+        <HideName name={decryptString(prop.value)?.split(',')[0]}/>
+        <span className="loading loading-dots loading-sm"></span>
     </div>
 }
 

@@ -25,6 +25,31 @@ export function decryptObject(encryptedMessage) {
 // console.log(be);
 
 
+export async function checkFingerprint(fingerprint) {
+    const be = store?.getState()?.server?.be || ''
+    try {
+        const data = await axios
+            .get(be + '/checkFingerprint/' + fingerprint, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "true", // Header ngrok-skip-browser-warning
+                },
+            }).then(res => {
+                console.log(be + '/checkFingerprint', fingerprint, res)
+                return {access: res.data.canAbsen, msg: res.data.canAbsen ? 
+                    'Anda dapat melanjutkan absen' 
+                    : 
+                    'Anda sudah absen hari ini sebagai...'
+                }
+            }).catch(() => {
+                return {access: false, msg: 'Server tidak merespon atau sedang tidak dapat diakses'}
+            })
+        return data
+    } catch (error) {
+        return {access: false, msg: 'Client error'}
+    }
+}
+
 export async function checkValid(ip) {
     const be = store?.getState()?.server?.be || ''
     try {

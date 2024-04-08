@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import { checkValid, encryptString } from "../utils";
+import { checkFingerprint, encryptString } from "../utils";
 import { TbQrcodeOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import blockQr from '../assets/blockQr.png'
@@ -12,29 +12,36 @@ import getBrowserFingerprint from 'get-browser-fingerprint'
 export default function QrCodeGenerator() {
     const account = useSelector(state => state.account.data)
     const navigate = useNavigate()
-    const [ip, setIp] = useState('')
+    // const [ip, setIp] = useState('')
+    const [fingerprint, setFingerprint] = useState('')
     const [canAbsence, setCanAbsence] = useState(true)
     const [textinfo, setTextinfo] = useState(true)
     const [isGettingPermission, setIsGettingPermission] = useState(false)
 
-    const getIp = useCallback(async() => {
-        setIsGettingPermission(true)
-        try {
-            await axios.get("https://api.ipify.org/?format=json")
-            .then(res => {
-                    setIp(res.data.ip)
-                }).catch(e => {
-                    console.log(e)
-                })
-        } catch (error) {
-            console.log(error);
-        }
-    },[])
+    // const getIp = useCallback(async() => {
+    //     setIsGettingPermission(true)
+    //     try {
+    //         await axios.get("https://api.ipify.org/?format=json")
+    //         .then(res => {
+    //                 setIp(res.data.ip)
+    //             }).catch(e => {
+    //                 console.log(e)
+    //             })
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // },[])
+
+    const getFingerprint = useCallback(() => {
+        const browserFingerprint = getBrowserFingerprint()
+        console.log(browserFingerprint)
+        setFingerprint(browserFingerprint)
+    }, [])
     
     const getPermissionAbsence = useCallback(async() => {
         setTextinfo('')
         try {
-            const permission = await checkValid(ip)
+            const permission = await checkFingerprint(fingerprint)
             setIsGettingPermission(false)
             setCanAbsence(permission.access)
             setTextinfo(permission.msg)
@@ -43,21 +50,21 @@ export default function QrCodeGenerator() {
             setTextinfo('Server error')
             console.log(error)
         }
-    },[ip])
+    },[fingerprint])
 
     useEffect(() => {
-        if (!ip) {
-            getIp()
+        if (!fingerprint) {
+            getFingerprint()
         } else {
             getPermissionAbsence()
         }
-    },[ip, getIp, getPermissionAbsence])
+    },[getPermissionAbsence, fingerprint, getFingerprint])
 
     if (isGettingPermission) return <div className="flex flex-col gap-2 items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
         <p>Mendapatkan izin QrCode</p>
     </div>
-    if (!ip) return <div className="flex items-center justify-center">
+    if (!fingerprint) return <div className="flex items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
         <p>Validasi pengguna</p>
     </div>
@@ -94,7 +101,7 @@ export default function QrCodeGenerator() {
         <div className="card bg-base-100 overflow-hidden">
             <div className="p-2 flex justify-center">
                 <div className="p-2 bg-neutral-100 rounded shadow-lg">
-                    <MyQrCode value={encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip}`)}/>
+                    <MyQrCode value={encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${fingerprint}`)}/>
                 </div>
             </div>
             <div className="text-xl flex flex-col gap-2">
@@ -107,7 +114,7 @@ export default function QrCodeGenerator() {
                         <span>Tunjukkan Kode-Qr ke pemindai yang disediakan sekolah.</span>
                     </div>
                 </div> */}
-                <p className="break-all text-xs bg-neutral-300 rounded-lg p-2 select-none">{getBrowserFingerprint()} {encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${ip},${+new Date()}`)}</p>
+                <p className="break-all text-xs bg-neutral-300 rounded-lg p-2 select-none">{getBrowserFingerprint()} {encryptString(`${account?.nama},${account?.nomor},${account?.kelas},${account?.nomorAbsen},${fingerprint},${+new Date()}`)}</p>
             </div>
         </div>
     </div>
