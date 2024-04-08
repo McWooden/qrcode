@@ -12,8 +12,7 @@ import HideName from "./HideName";
 
 export default function Scanner() {
     const [qrValue, setQrValue] = useState('')
-    const [queue, setQueue] = useState([])
-    const [openCam, setOpenCam] = useState(false)
+    const [openCam, setOpenCam] = useState(true)
     const be = useSelector(state => state.server.be)
     const camPassword = useSelector(state => state.source.camPassword)
     const isScanPermission = useSelector(state => state.source.isCamPermission)
@@ -63,6 +62,8 @@ export default function Scanner() {
                 setErrorList(prev => [...prev, {qr: qrValue, res: error.response}])
                 console.error("Error:", error)
                 return false
+            }).finally(() => {
+                setQrValue('')
             })
         return status
     },[be, ip, qrValue, scanOnError, scanOnSuccess])
@@ -79,16 +80,11 @@ export default function Scanner() {
         }
     }
 
-    // useEffect(() => {
-    //     if (!qrValue) return
-    //     sendMessage(qrValue)
-    // }, [qrValue, sendMessage])
     useEffect(() => {
         if (!qrValue) return
-        if (queue.find(e => e === qrValue)) setQueue(prev => prev.push(qrValue))
-        setQrValue('')
-    }, [qrValue, queue])
-
+        sendMessage(qrValue)
+    }, [qrValue, sendMessage])
+    
     const getIp = useCallback(async() => {
         try {
             await axios.get("https://api.ipify.org/?format=json")
@@ -142,12 +138,13 @@ export default function Scanner() {
                 <label className="form-control w-full">
                     <input type="text" placeholder="Nilai yang terbaca" className="input input-bordered w-full" value={qrValue} readOnly/>
                 </label>
-                {queue.map(e => <NodeQueue key={e} value={e} sendMessage={sendMessage} removeFromQueue={() => setQueue(prev => prev.filter(x => x != e))}/> )}
-                {/* {qrValue && <div className="flex gap-2 items-center shadow p-2 px-4">
+                {/* {queue?.map(e => <NodeQueue key={e} value={e} sendMessage={sendMessage} removeFromQueue={() => setQueue(prev => prev.filter(x => x != e))}/> ) || ''} */}
+                {/* {typeof antrian === Array ? 'ya' : typeof antrian} */}
+                {qrValue && <div className="flex gap-2 items-center shadow p-2 px-4">
                         <HideName name={decryptString(qrValue)?.split(',')[0]}/>
                         <span className="loading loading-dots loading-sm"></span>
                     </div>
-                } */}
+                }
                 <div className="btn btn-primary" onClick={() => setQrValue('')}>Bersihkan input diatas</div>
                 {/* <ChatApp/> */}
             </div>
@@ -214,26 +211,26 @@ const History = prop => {
     </div>
 }
 
-function NodeQueue(prop) {
-    const [isFetch, setIsFetch] = useState(false)
+// function NodeQueue(prop) {
+//     const [isFetch, setIsFetch] = useState(false)
 
-    const sendMessage = useCallback(async () => {
-        setIsFetch(true)
-        await prop.sendMessage()
-        prop.removeFromQueue()
-    }, [prop])
+//     const sendMessage = useCallback(async () => {
+//         setIsFetch(true)
+//         await prop.sendMessage()
+//         prop.removeFromQueue()
+//     }, [prop])
     
 
-    useEffect(() => {
-        if (isFetch) return
-        sendMessage()
-    },[isFetch, sendMessage])
+//     useEffect(() => {
+//         if (isFetch) return
+//         sendMessage()
+//     },[isFetch, sendMessage])
 
-    return <div className="flex gap-2 items-center shadow p-2 px-4">
-        <HideName name={decryptString(prop.value)?.split(',')[0]}/>
-        <span className="loading loading-dots loading-sm"></span>
-    </div>
-}
+//     return <div className="flex gap-2 items-center shadow p-2 px-4">
+//         <HideName name={decryptString(prop.value)?.split(',')[0]}/>
+//         <span className="loading loading-dots loading-sm"></span>
+//     </div>
+// }
 
 // const Message = (prop) => {
 //   useEffect(() => {
