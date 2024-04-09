@@ -12,7 +12,7 @@ import HideName from "./HideName";
 
 export default function Scanner() {
     const [qrValue, setQrValue] = useState('')
-    const [openCam, setOpenCam] = useState(true)
+    const [openCam, setOpenCam] = useState(false)
     const be = useSelector(state => state.server.be)
     const camPassword = useSelector(state => state.source.camPassword)
     const isScanPermission = useSelector(state => state.source.isCamPermission)
